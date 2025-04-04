@@ -1,7 +1,7 @@
 // Sidebar
 import { useState, useEffect, useRef } from 'react';
 import { FaUsers, FaFolder, FaAngleLeft, FaAngleRight } from 'react-icons/fa';
-import logo from '../../assets/amp-logo.svg';
+import logo from '../assets/amp-logo.svg';
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false); 
@@ -12,15 +12,15 @@ const Sidebar = () => {
 
   useEffect(() => {
     if (!isCollapsed) {
-      setIsCollapsedUI(false); // instantly expand UI
+      setIsCollapsedUI(false); 
       setIsFooterVisible(true);
       timeoutRef.current = setTimeout(() => setShowFooter(true), 10);
     } else {
-      // start hiding footer before collapse
+      
       setShowFooter(false);
       timeoutRef.current = setTimeout(() => {
         setIsFooterVisible(false);
-        setIsCollapsedUI(true); // collapse UI after footer disappears
+        setIsCollapsedUI(true); 
       }, 300);
     }
 
