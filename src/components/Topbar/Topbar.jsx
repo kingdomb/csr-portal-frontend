@@ -8,7 +8,6 @@ const Topbar = ({ username, onLogout }) => {
       <div className='flex items-center gap-4'>
         <TopbarUsername username={username} />
         <div className='border-l-2 border-white h-10 mx-4 rounded-full' />{' '}
-        {/* Adjusted vertical line with rounded edges */}
         <TopbarLogout onLogout={onLogout} />
       </div>
     </div>
