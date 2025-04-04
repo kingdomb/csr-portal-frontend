@@ -1,21 +1,18 @@
-import { useState } from 'react';
-import Sidebar from './components/Sidebar/Sidebar';
-import Topbar from './components/Topbar/Topbar';
+// App.jsx
+import Sidebar from './components/Sidebar';
+import Topbar from './components/Topbar';
+import useAuth from './authentication/useAuth.js';
 
 function App() {
-  const [username, setUsername] = useState('Jane Doe');
-
-  const handleLogout = () => {
-    console.log('Logging out...');
-    // Add your logout logic here, e.g., clearing auth tokens, redirecting, etc.
-  };
+  const { auth, logout } = useAuth();
+  const username = auth?.user?.name;
 
   return (
     <div className='flex'>
       <Sidebar />
       <div className='flex flex-col flex-1'>
-        <Topbar username={username} onLogout={handleLogout} />
-        {/* Main Content Goes Here */}
+        <Topbar username={username} onLogout={logout} />
+        {/* TODO main content */}
       </div>
     </div>
   );
