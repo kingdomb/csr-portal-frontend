@@ -31,7 +31,7 @@ const Login = () => {
     <div className='min-h-screen bg-[#1E293B] flex items-center justify-center p-4'>
       <form
         onSubmit={handleSubmit}
-        className='bg-[#0F172A] text-white p-8 rounded-lg shadow-lg w-full max-w-sm space-y-6'
+        className='bg-[#0F172A] text-white p-8 rounded-2xl shadow-lg w-full max-w-sm space-y-6'
       >
         <div className='text-center'>
           <img src={logo} alt='Logo' className='h-12 mx-auto mb-2' />
@@ -45,19 +45,19 @@ const Login = () => {
             ref={usernameRef}
             type='text'
             placeholder='Username'
-            className='w-full px-4 py-2 rounded bg-[#1E293B] text-white border border-gray-600 focus:outline-none focus:ring'
+            className='w-full px-4 py-2 rounded-3xl bg-[#1E293B] text-white border border-gray-600 focus:outline-none focus:ring'
           />
           <input
             ref={passwordRef}
             type='password'
             placeholder='Password'
-            className='w-full px-4 py-2 rounded bg-[#1E293B] text-white border border-gray-600 focus:outline-none focus:ring'
+            className='w-full px-4 py-2 rounded-3xl bg-[#1E293B] text-white border border-gray-600 focus:outline-none focus:ring'
           />
         </div>
 
         <button
           type='submit'
-          className='w-full bg-[#38BDF8] text-black font-semibold py-2 rounded hover:bg-[#0ea5e9] transition'
+          className='bg-[#38BDF8] text-black font-semibold py-2 px-18 rounded-3xl hover:bg-[#0ea5e9] transition'
         >
           Log In
         </button>
