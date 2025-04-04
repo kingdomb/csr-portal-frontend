@@ -1,11 +1,11 @@
 // Sidebar
 import { useState, useEffect, useRef } from 'react';
 import { FaUsers, FaFolder, FaAngleLeft, FaAngleRight } from 'react-icons/fa';
-import logo from '../assets/amp-logo.svg';
+import logo from '../../assets/amp-logo.svg';
 
 const Sidebar = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false); // Logical state
-  const [isCollapsedUI, setIsCollapsedUI] = useState(false); // Visual state
+  const [isCollapsed, setIsCollapsed] = useState(false); 
+  const [isCollapsedUI, setIsCollapsedUI] = useState(false);
   const [showFooter, setShowFooter] = useState(false);
   const [isFooterVisible, setIsFooterVisible] = useState(false);
   const timeoutRef = useRef(null);
