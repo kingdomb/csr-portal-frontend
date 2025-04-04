@@ -55,12 +55,14 @@ const Login = () => {
           />
         </div>
 
-        <button
-          type='submit'
-          className='bg-[#38BDF8] text-black font-semibold py-2 px-18 rounded-3xl hover:bg-[#0ea5e9] transition'
-        >
-          Log In
-        </button>
+        <div className='flex justify-center'>
+          <button
+            type='submit'
+            className='bg-[#38BDF8] text-black font-semibold py-2 px-18 rounded-3xl hover:bg-[#0ea5e9] transition'
+          >
+            Log In
+          </button>
+        </div>
       </form>
     </div>
   );
