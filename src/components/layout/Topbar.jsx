@@ -16,7 +16,11 @@ const Topbar = ({ username, onLogout }) => {
 
 // Subcomponents
 const TopbarLabel = ({ label }) => {
-  return <h1 className='text-xl font-semibold'>{label}</h1>;
+  return (
+    <h1 className='text-2xl font-bold text-[#38BDF8] tracking-wide'>
+      {label}
+    </h1>
+  );
 };
 
 const TopbarUsername = ({ username }) => {
