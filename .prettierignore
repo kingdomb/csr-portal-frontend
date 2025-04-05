@@ -1,0 +1,16 @@
+# .prettierignore
+node_modules
+build
+dist
+.vercel
+*.svg
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.css
+*.html
+*.lock
+*.log
+coverage
+.DS_Store

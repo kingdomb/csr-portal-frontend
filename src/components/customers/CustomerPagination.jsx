@@ -8,58 +8,75 @@ export default function CustomerPagination({
   indexOfFirstCustomer,
   indexOfLastCustomer,
   totalItems,
-  itemsPerPage,
 }) {
-  if (totalItems <= itemsPerPage) return null;
+  if (totalPages <= 1) return null;
+
+  const getVisiblePages = () => {
+    const pages = [];
+
+    if (totalPages <= 5) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+
+    if (currentPage <= 3) {
+      pages.push(1, 2, 3, '...', totalPages);
+    } else if (currentPage >= totalPages - 2) {
+      pages.push(1, '...', totalPages - 2, totalPages - 1, totalPages);
+    } else {
+      pages.push(1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages);
+    }
+
+    return pages;
+  };
+
+  const visiblePages = getVisiblePages();
 
   return (
-    <div className='bg-[#0F172A] text-white px-4 py-3 border border-gray-700 rounded-lg shadow-sm'>
-      <div className='flex flex-col md:flex-row md:justify-between md:items-center space-y-2 md:space-y-0'>
-        <div className='text-sm md:text-base text-gray-200'>
-          Showing{' '}
-          <span className='font-semibold text-white'>
-            {indexOfFirstCustomer + 1}
-          </span>{' '}
-          to{' '}
-          <span className='font-semibold text-white'>
-            {Math.min(indexOfLastCustomer, totalItems)}
-          </span>{' '}
-          of <span className='font-semibold text-white'>{totalItems}</span>{' '}
-          results
-        </div>
+    <div className="flex items-center justify-between px-4 py-3 border-t border-gray-700 mt-4">
+      <div className="text-gray-400 text-sm">
+        Showing <span className="text-white font-semibold">{indexOfFirstCustomer + 1}</span> to{' '}
+        <span className="text-white font-semibold">
+          {Math.min(indexOfLastCustomer, totalItems)}
+        </span>{' '}
+        of <span className="text-white font-semibold">{totalItems}</span>
+      </div>
 
-        <nav
-          className='inline-flex rounded-md shadow-sm -space-x-px text-sm'
-          aria-label='Pagination'
-        >
+      <div className="flex items-center gap-1">
+        {totalPages > 1 && (
           <button
             onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
             disabled={currentPage === 1}
-            className='px-2 py-2 bg-[#1E293B] text-gray-400 border border-gray-600 rounded-l-md hover:bg-[#334155]'
           >
-            <FaChevronLeft />
+            <FaChevronLeft className="w-4 h-4 text-white" />
           </button>
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
+        )}
+
+        {visiblePages.map((page, i) =>
+          page === '...' ? (
+            <span key={`ellipsis-${i}`} className="px-2 py-1 text-sm text-gray-500">
+              ...
+            </span>
+          ) : (
             <button
-              key={number}
-              onClick={() => setCurrentPage(number)}
-              className={`px-4 py-2 border border-gray-600 ${
-                currentPage === number
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-[#1E293B] text-gray-300 hover:bg-[#334155]'
+              key={page}
+              onClick={() => setCurrentPage(page)}
+              className={`px-2 py-1 rounded-md text-sm font-medium ${
+                page === currentPage ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-[#334155]'
               }`}
             >
-              {number}
+              {page}
             </button>
-          ))}
+          )
+        )}
+
+        {totalPages > 1 && (
           <button
             onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
             disabled={currentPage === totalPages}
-            className='px-2 py-2 bg-[#1E293B] text-gray-400 border border-gray-600 rounded-r-md hover:bg-[#334155]'
           >
-            <FaChevronRight />
+            <FaChevronRight className="w-4 h-4 text-white" />
           </button>
-        </nav>
+        )}
       </div>
     </div>
   );

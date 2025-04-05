@@ -1,5 +1,6 @@
 // Sidebar.jsx
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   FaUsers,
   FaFolder,
@@ -9,24 +10,53 @@ import {
   FaCar,
   FaClipboardList,
 } from 'react-icons/fa';
+
 import logo from '../../assets/amp-logo.svg';
+import { useNavigation } from '../../context/useNavigation';
 
 const Sidebar = ({
-  selectedCustomer,
   selectedTransaction,
   selectedSubscription,
   setShowEditModal,
   setShowEditTransactionModal,
-  setShowEditVehicleSubscriptionModal
+  setShowEditVehicleSubscriptionModal,
 }) => {
+  const navigate = useNavigate();
+  const { selectedCustomer, activeNavItem, setActiveNavItem } = useNavigation();
+
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isCollapsedUI, setIsCollapsedUI] = useState(false);
   const [showFooter, setShowFooter] = useState(false);
   const [isFooterVisible, setIsFooterVisible] = useState(false);
   const [isMd, setIsMd] = useState(false);
   const [manuallyToggled, setManuallyToggled] = useState(false);
-  const [activeNavItem, setActiveNavItem] = useState('');
   const timeoutRef = useRef(null);
+
+  const mainNavItems = [
+    { name: 'CUSTOMERS', icon: <FaUsers />, path: '/customers' },
+    { name: 'CUSTOMER PROFILE', icon: <FaFolder />, path: '/customer-profile' },
+  ];
+
+  const customerProfileSubItems = [
+    {
+      name: 'EDIT CUSTOMER INFO',
+      icon: <FaIdCard />,
+      action: () => selectedCustomer && setShowEditModal(true),
+      disabled: !selectedCustomer,
+    },
+    {
+      name: 'EDIT VEHICLE SUBSCRIPTIONS',
+      icon: <FaCar />,
+      action: () => selectedSubscription && setShowEditVehicleSubscriptionModal(true),
+      disabled: !selectedSubscription,
+    },
+    {
+      name: 'EDIT TRANSACTIONS',
+      icon: <FaClipboardList />,
+      action: () => selectedTransaction && setShowEditTransactionModal(true),
+      disabled: !selectedTransaction,
+    },
+  ];
 
   useEffect(() => {
     const handleResize = () => {
@@ -56,36 +86,13 @@ const Sidebar = ({
     return () => timeoutRef.current && clearTimeout(timeoutRef.current);
   }, [isCollapsed]);
 
-  const mainNavItems = [
-    { name: 'CUSTOMERS', icon: <FaUsers /> },
-    { name: 'CASES', icon: <FaFolder /> }
-  ];
-
-  const caseSubItems = [
-    {
-      name: 'EDIT CUSTOMER INFO',
-      icon: <FaIdCard />,
-      action: () => selectedCustomer && setShowEditModal(true),
-      disabled: !selectedCustomer,
-    },
-    {
-      name: 'EDIT VEHICLE SUBSCRIPTIONS',
-      icon: <FaCar />,
-      action: () =>
-        selectedSubscription && setShowEditVehicleSubscriptionModal(true),
-      disabled: !selectedSubscription,
-    },
-    {
-      name: 'EDIT TRANSACTIONS',
-      icon: <FaClipboardList />,
-      action: () => selectedTransaction && setShowEditTransactionModal(true),
-      disabled: !selectedTransaction,
-    },
-  ];
-
-  const handleMainNavClick = (itemName) => {
+  const handleMainNavClick = (itemName, path) => {
     setActiveNavItem(itemName);
-    if (!isMd && (itemName !== 'CUSTOMERS' || caseSubItems.every(sub => sub.disabled))) {
+    navigate(path); // 👈 navigate on click
+    if (
+      !isMd &&
+      (itemName !== 'CUSTOMER PROFILE' || customerProfileSubItems.every((sub) => sub.disabled))
+    ) {
       setIsCollapsed(true);
       setManuallyToggled(true);
     }
@@ -101,20 +108,18 @@ const Sidebar = ({
   };
 
   return (
-    <div className='flex'>
+    <div className="flex">
       <div
         className={`bg-[#1E293B] border-r border-gray-700 h-screen transition-all duration-300 relative ${
           isCollapsedUI ? 'w-16' : 'w-64'
         }`}
       >
-        <div className='bg-[#0F172A] px-4 py-5 text-white flex items-center justify-between'>
-          <div className='flex flex-col items-start'>
+        <div className="bg-[#0F172A] px-4 py-5 text-white flex items-center justify-between">
+          <div className="flex flex-col items-start">
             {!isCollapsedUI && (
               <>
-                <img src={logo} alt='Logo' className='h-10' />
-                <span className='text-white text-lg font-semibold mt-2'>
-                  CSR Portal
-                </span>
+                <img src={logo} alt="Logo" className="h-10" />
+                <span className="text-white text-lg font-semibold mt-2">CSR Portal</span>
               </>
             )}
           </div>
@@ -123,29 +128,29 @@ const Sidebar = ({
               setIsCollapsed(!isCollapsed);
               setManuallyToggled(true);
             }}
-            className='text-gray-300'
+            className="text-gray-300"
           >
             {isCollapsed ? <FaAngleRight size={20} /> : <FaAngleLeft size={20} />}
           </button>
         </div>
 
-        <nav className='mt-6'>
+        <nav className="mt-6">
           <ul>
             {mainNavItems.map((item) => (
               <li key={item.name}>
                 <div
-                  onClick={() => handleMainNavClick(item.name)}
+                  onClick={() => handleMainNavClick(item.name, item.path)}
                   className={`flex items-center gap-3 p-3 cursor-pointer transition-colors duration-200 hover:bg-[#334155] ${
                     isCollapsedUI ? 'justify-center' : ''
                   } ${activeNavItem === item.name ? 'bg-[#334155]' : ''}`}
                 >
-                  <div className='text-[#38BDF8]'>{item.icon}</div>
-                  {!isCollapsedUI && <span className='text-white font-medium'>{item.name}</span>}
+                  <div className="text-[#38BDF8]">{item.icon}</div>
+                  {!isCollapsedUI && <span className="text-white font-medium">{item.name}</span>}
                 </div>
 
-                {item.name === 'CUSTOMERS' && activeNavItem === 'CUSTOMERS' && (
-                  <ul className='ml-4 mt-2'>
-                    {caseSubItems.map((subItem) => (
+                {item.name === 'CUSTOMER PROFILE' && activeNavItem === 'CUSTOMER PROFILE' && (
+                  <ul className="ml-4 mt-2">
+                    {customerProfileSubItems.map((subItem) => (
                       <li key={subItem.name}>
                         <button
                           onClick={() => handleSubItemClick(subItem)}

@@ -3,7 +3,7 @@ export const sampleCustomers = [
     Name: 'John Smith',
     Email: 'john.smith@example.com',
     'Account Status': 'Active',
-    'Cust. Id': 'RM12345678',
+    'Cust. Id': 'RM10001',
     Membership: 'Elite',
     Phone: '+12345678900',
   },
