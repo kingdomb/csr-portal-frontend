@@ -1,6 +1,7 @@
 // Login.jsx
 import { useNavigate } from 'react-router-dom'; 
 import { useRef, useState } from 'react';
+
 import { authenticateUser } from '../data/userSeed';
 import useAuth from '../authentication/useAuth'; 
 import logo from '../assets/amp-logo.svg';

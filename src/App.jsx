@@ -1,9 +1,11 @@
 // App.jsx
 import { Routes, Route, Navigate } from 'react-router-dom';
+
 import Sidebar from './components/layout/Sidebar';
 import Topbar from './components/layout/Topbar';
 import useAuth from './authentication/useAuth.js';
 import CustomersPage from './pages/Customers';
+import CustomerProfile from './pages/CustomerProfile';
 
 function App() {
   const { auth, logout } = useAuth();
@@ -17,7 +19,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Navigate to='/customers' replace />} />
           <Route path='/customers' element={<CustomersPage />} />
-          {/* Future: <Route path="/cases" element={<CasesPage />} /> */}
+          <Route path='/customer-profile' element={<CustomerProfile />} />
         </Routes>
       </div>
     </div>
