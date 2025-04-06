@@ -71,24 +71,36 @@ export default function CustomerTable({
           </tr>
         </thead>
         <tbody className="bg-[#0F172A] divide-y divide-gray-700">
-          {customers.map((customer, i) => (
-            <tr
-              key={i}
-              className="hover:bg-[#1e293b] cursor-pointer transition-colors duration-150"
-              onClick={() => handleCustomerClick(customer)}
-            >
-              <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap">{customer['Name']}</td>
-              <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap hidden 6xl:table-cell">
-                {customer['Email']}
-              </td>
-              <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap hidden 6xl:table-cell">
-                {customer['Phone']}
-              </td>
-              <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap">
-                {customer['Account Status']}
-              </td>
-            </tr>
-          ))}
+          {customers.map((customer, i) => {
+            const status = customer['Account Status'];
+            const statusClass =
+              status === 'Active'
+                ? 'bg-green-500 text-white'
+                : status === 'Expired'
+                  ? 'bg-red-500 text-white'
+                  : 'bg-gray-700 text-white';
+
+            return (
+              <tr
+                key={i}
+                className="hover:bg-[#1e293b] cursor-pointer transition-colors duration-150"
+                onClick={() => handleCustomerClick(customer)}
+              >
+                <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap">{customer['Name']}</td>
+                <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap hidden 6xl:table-cell">
+                  {customer['Email']}
+                </td>
+                <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap hidden 6xl:table-cell">
+                  {customer['Phone']}
+                </td>
+                <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap">
+                  <span className={`px-2 py-1 rounded text-xs font-medium ${statusClass}`}>
+                    {status}
+                  </span>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

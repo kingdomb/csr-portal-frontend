@@ -10,16 +10,30 @@ export default function CustomerDetailsCard({ customer }) {
   const right = keys.slice(half);
 
   const renderFields = (fields) =>
-    fields.map((key) => (
-      <div key={key} className="flex flex-col 2xs:flex-row gap-1 2xs:gap-2 items-start break-words">
-        <p className="font-semibold text-white w-full 2xs:w-24 sm:w-28 lg:w-32 text-[10px] 2xs:text-xs sm:text-sm lg:text-base">
-          {key}:
-        </p>
-        <p className="text-white flex-1 text-[10px] 2xs:text-xs sm:text-sm lg:text-base">
-          {customer[key]}
-        </p>
-      </div>
-    ));
+    fields.map((key) => {
+      const value = customer[key];
+      const isStatus = key.toLowerCase() === 'account status';
+      const statusClass =
+        isStatus && value === 'Active'
+          ? 'text-green-400'
+          : isStatus && value === 'Expired'
+            ? 'text-red-400'
+            : 'text-white';
+
+      return (
+        <div
+          key={key}
+          className="flex flex-col 2xs:flex-row gap-1 2xs:gap-2 items-start break-words"
+        >
+          <p className="font-semibold text-white w-full 2xs:w-24 sm:w-28 lg:w-32 text-[10px] 2xs:text-xs sm:text-sm lg:text-base">
+            {key}:
+          </p>
+          <p className={`${statusClass} flex-1 text-[10px] 2xs:text-xs sm:text-sm lg:text-base`}>
+            {value}
+          </p>
+        </div>
+      );
+    });
 
   return (
     <Card className="mb-4 sm:mb-6">
