@@ -29,11 +29,12 @@ const Sidebar = () => {
 
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isCollapsedUI, setIsCollapsedUI] = useState(false);
-  const [showFooter, setShowFooter] = useState(false);
-  const [isFooterVisible, setIsFooterVisible] = useState(false);
-  const [isMd, setIsMd] = useState(false);
+  const [isFooterVisible, setIsFooterVisible] = useState(false); 
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
   const [manuallyToggled, setManuallyToggled] = useState(false);
   const timeoutRef = useRef(null);
+
+  const BREAKPOINT = 1152;
 
   const mainNavItems = [
     { name: 'CUSTOMERS', icon: <FaUsers />, path: '/customers' },
@@ -42,18 +43,9 @@ const Sidebar = () => {
 
   const customerProfileSubItems = [
     {
-      name: 'EDIT CUSTOMER INFO',
+      name: 'EDIT CUSTOMER DETAILS',
       icon: <FaIdCard />,
       action: () => selectedCustomer && setShowEditModal(true),
-      disabled: !selectedCustomer,
-    },
-    {
-      name: 'ADD VEHICLE SUBSCRIPTION',
-      icon: <FaCar />,
-      action: () => {
-        setSelectedSubscription(null);
-        setShowEditVehicleSubscriptionModal(true);
-      },
       disabled: !selectedCustomer,
     },
     {
@@ -65,30 +57,37 @@ const Sidebar = () => {
       },
       disabled: !selectedCustomer,
     },
+    {
+      name: 'ADD VEHICLE SUBSCRIPTION',
+      icon: <FaCar />,
+      action: () => {
+        setSelectedSubscription(null);
+        setShowEditVehicleSubscriptionModal(true);
+      },
+      disabled: !selectedCustomer,
+    },
   ];
 
   useEffect(() => {
     const handleResize = () => {
-      const newIsMd = window.innerWidth >= 768;
-      if (newIsMd !== isMd && !manuallyToggled) {
-        setIsCollapsed(!newIsMd);
+      const screenIsLarge = window.innerWidth >= BREAKPOINT;
+      if (screenIsLarge !== isLargeScreen && !manuallyToggled) {
+        setIsCollapsed(!screenIsLarge);
       }
-      setIsMd(newIsMd);
+      setIsLargeScreen(screenIsLarge);
     };
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [isMd, manuallyToggled]);
+  }, [isLargeScreen, manuallyToggled]);
 
   useEffect(() => {
     if (!isCollapsed) {
       setIsCollapsedUI(false);
-      setIsFooterVisible(true);
-      timeoutRef.current = setTimeout(() => setShowFooter(true), 10);
+      timeoutRef.current = setTimeout(() => setIsFooterVisible(true), 10);
     } else {
-      setShowFooter(false);
+      setIsFooterVisible(false);
       timeoutRef.current = setTimeout(() => {
-        setIsFooterVisible(false);
         setIsCollapsedUI(true);
       }, 300);
     }
@@ -99,7 +98,7 @@ const Sidebar = () => {
     setActiveNavItem(itemName);
     navigate(path);
     if (
-      !isMd &&
+      !isLargeScreen &&
       (itemName !== 'CUSTOMER PROFILE' || customerProfileSubItems.every((sub) => sub.disabled))
     ) {
       setIsCollapsed(true);
@@ -112,14 +111,14 @@ const Sidebar = () => {
       <div
         className={`bg-[#1E293B] border-r border-gray-700 h-screen transition-all duration-300 relative ${
           isCollapsedUI ? 'w-16' : 'w-64'
-        }`}
+        } shrink-0`}
       >
-        <div className="bg-[#0F172A] px-4 py-5 text-white flex items-center justify-between">
+        <div className="bg-[#0F172A] px-4 py-5 text-white flex items-center justify-between min-h-16">
           <div className="flex flex-col items-start">
             {!isCollapsedUI && (
               <>
-                <img src={logo} alt="Logo" className="h-10" />
-                <span className="text-white text-lg font-semibold mt-2">CSR Portal</span>
+                <img src={logo} alt="Logo" className="h-10 pl-8" />
+                <span className="pl-8 text-white text-lg font-semibold mt-2">CSR Portal</span>
               </>
             )}
           </div>
@@ -182,7 +181,7 @@ const Sidebar = () => {
         {isFooterVisible && (
           <div
             className={`absolute bottom-4 w-full text-center text-xs text-gray-500 transition-opacity duration-300 ${
-              showFooter ? 'opacity-100' : 'opacity-0'
+              isFooterVisible ? 'opacity-100' : 'opacity-0'
             }`}
           >
             © 2025 AMP Holdings Limited.
