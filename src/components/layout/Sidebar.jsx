@@ -9,15 +9,18 @@ import {
   FaIdCard,
   FaCar,
   FaClipboardList,
+  FaSignOutAlt,
 } from 'react-icons/fa';
 
 import { useNavigation } from '../../context/useNavigation';
 import { useCustomerModals } from '../../context/CustomerModalContext';
 import SidebarBranding from './SidebarBranding';
 import SubMenuList from './SubMenuList';
+import useAuth from '../../authentication/useAuth';
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const { selectedCustomer, activeNavItem, setActiveNavItem } = useNavigation();
 
   const {
@@ -149,6 +152,17 @@ const Sidebar = () => {
             ))}
           </ul>
         </nav>
+
+        {/* Logout button below 448px only */}
+        <div className="xl:hidden absolute bottom-12 left-0 w-full flex justify-center">
+          <button
+            onClick={logout}
+            className="group p-2 rounded-full hover:bg-red-600 transition-colors"
+            title="Logout"
+          >
+            <FaSignOutAlt size={18} className="text-white group-hover:text-white" />
+          </button>
+        </div>
 
         {isFooterVisible && (
           <div
