@@ -16,9 +16,9 @@ export default function CustomerProfile() {
   }, [selectedCustomer, navigate]);
 
   return (
-    <div className="p-6 bg-[#1E293B] min-h-screen text-white">
-      {/* Breadcrumb only */}
-      <div className="mb-4 text-sm text-gray-400">
+    <div className="flex flex-col h-full bg-[#1E293B] text-white">
+      {/* Sticky Breadcrumb */}
+      <div className="p-6 text-sm text-gray-400 bg-[#1E293B] z-10">
         <Link
           to="/customers"
           className="text-blue-400 hover:underline"
@@ -30,9 +30,10 @@ export default function CustomerProfile() {
         <span className="text-white font-semibold">CUSTOMER PROFILE</span>
       </div>
 
-      <CustomerProfileWrapper
-        selectedCustomer={selectedCustomer}
-      />
+      {/* Scrollable content */}
+      <div className="flex-1 overflow-y-auto px-6 pb-6">
+        <CustomerProfileWrapper selectedCustomer={selectedCustomer} />
+      </div>
     </div>
   );
 }

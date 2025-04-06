@@ -14,7 +14,7 @@ import {
 import { useNavigation } from '../../context/useNavigation';
 import { useCustomerModals } from '../../context/CustomerModalContext';
 import SidebarBranding from './SidebarBranding';
-import SubMenuList from './SubMenuList'; // ✅ NEW
+import SubMenuList from './SubMenuList';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -35,7 +35,7 @@ const Sidebar = () => {
   const [manuallyToggled, setManuallyToggled] = useState(false);
   const timeoutRef = useRef(null);
 
-  const BREAKPOINT = 1152;
+  const BREAKPOINT = 1280;
 
   const mainNavItems = [
     { name: 'CUSTOMERS', icon: <FaUsers />, path: '/customers' },
