@@ -2,17 +2,32 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { customerTransactions } from '../../data/customerTransactions.js';
+import { registeredUserTxns } from '../../data/registeredUserTxns.js';
 import { vehicleSubscriptions } from '../../data/vehicleSubscriptions.js';
 import EditTransactionModal from '../../modals/EditTransactionModal';
 import EditVehicleSubscriptionModal from '../../modals/EditVehicleSubscriptionModal';
+import EditCustomerModal from '../../modals/EditCustomerModal';
 import CustomerHeader from './CustomerHeader';
 import CustomerDetailsCard from './CustomerDetailsCard';
 import CustomerDataTable from './CustomerDataTable';
 import Card from '../common/Card';
+import { useCustomerModals } from '../../context/CustomerModalContext';
 
-export default function CustomerProfileWrapper({ selectedCustomer }) {
+export default function CustomerProfileWrapper({ selectedCustomer, setSelectedCustomer }) {
   const navigate = useNavigate();
+
+  const {
+    showEditModal,
+    setShowEditModal,
+    showEditTransactionModal,
+    setShowEditTransactionModal,
+    showEditVehicleSubscriptionModal,
+    setShowEditVehicleSubscriptionModal,
+    selectedTransaction,
+    setSelectedTransaction,
+    selectedSubscription,
+    setSelectedSubscription,
+  } = useCustomerModals();
 
   const statusColors = {
     open: 'bg-blue-500 text-white',
@@ -20,6 +35,12 @@ export default function CustomerProfileWrapper({ selectedCustomer }) {
     completed: 'bg-green-500 text-white',
     escalated: 'bg-red-500 text-white',
   };
+
+  const [txnSort, setTxnSort] = useState({ key: null, direction: 'asc' });
+  const [subSort, setSubSort] = useState({ key: null, direction: 'asc' });
+
+  const [txnPage, setTxnPage] = useState(1);
+  const [subPage, setSubPage] = useState(1);
 
   const handleBack = () => {
     navigate('/customers');
@@ -54,24 +75,15 @@ export default function CustomerProfileWrapper({ selectedCustomer }) {
     );
   };
 
-  const [txnSort, setTxnSort] = useState({ key: null, direction: 'asc' });
-  const [subSort, setSubSort] = useState({ key: null, direction: 'asc' });
-
-  const [txnPage, setTxnPage] = useState(1);
-  const [subPage, setSubPage] = useState(1);
-
-  const [showTxnModal, setShowTxnModal] = useState(false);
-  const [showSubModal, setShowSubModal] = useState(false);
-  const [selectedTxn, setSelectedTxn] = useState(null);
-  const [selectedSub, setSelectedSub] = useState(null);
-
-  const customerTxns = customerTransactions.filter(
+  const customerTxns = registeredUserTxns.filter(
     (t) => t['Cust. Id'] === selectedCustomer?.['Cust. Id']
   );
 
   const customerSubs = vehicleSubscriptions.filter(
     (s) => s['Cust. Id'] === selectedCustomer?.['Cust. Id']
   );
+
+  const customers = [selectedCustomer];
 
   return (
     <div className="p-6">
@@ -95,12 +107,12 @@ export default function CustomerProfileWrapper({ selectedCustomer }) {
               }))
             }
             sortConfig={txnSort}
-            type="customerTransactions"
+            type="registeredUserTxns"
             formatDate={formatDate}
             statusColors={statusColors}
             onRowClick={(txn) => {
-              setSelectedTxn(txn);
-              setShowTxnModal(true);
+              setSelectedTransaction(txn);
+              setShowEditTransactionModal(true);
             }}
           />
 
@@ -121,8 +133,8 @@ export default function CustomerProfileWrapper({ selectedCustomer }) {
             type="subscriptions"
             statusColors={statusColors}
             onRowClick={(sub) => {
-              setSelectedSub(sub);
-              setShowSubModal(true);
+              setSelectedSubscription(sub);
+              setShowEditVehicleSubscriptionModal(true);
             }}
           />
         </>
@@ -132,21 +144,31 @@ export default function CustomerProfileWrapper({ selectedCustomer }) {
         </Card>
       )}
 
-      {showTxnModal && selectedTxn && (
+      {showEditModal && (
+        <EditCustomerModal
+          selectedCustomer={selectedCustomer}
+          setSelectedCustomer={setSelectedCustomer}
+          customers={customers}
+          setCustomers={() => {}}
+          setShowEditModal={setShowEditModal}
+        />
+      )}
+
+      {showEditTransactionModal && (
         <EditTransactionModal
-          selectedTransaction={selectedTxn}
-          setSelectedTransaction={setSelectedTxn}
-          setShowEditModal={setShowTxnModal}
-          customerTransactions={customerTxns}
+          selectedTransaction={selectedTransaction}
+          setSelectedTransaction={setSelectedTransaction}
+          setShowEditModal={setShowEditTransactionModal}
+          registeredUserTxns={customerTxns}
           setTransactions={() => {}}
         />
       )}
 
-      {showSubModal && selectedSub && (
+      {showEditVehicleSubscriptionModal && (
         <EditVehicleSubscriptionModal
-          selectedSubscription={selectedSub}
-          setSelectedSubscription={setSelectedSub}
-          setShowEditModal={setShowSubModal}
+          selectedSubscription={selectedSubscription}
+          setSelectedSubscription={setSelectedSubscription}
+          setShowEditModal={setShowEditVehicleSubscriptionModal}
           vehicleSubscriptions={customerSubs}
           setVehicleSubscriptions={() => {}}
         />

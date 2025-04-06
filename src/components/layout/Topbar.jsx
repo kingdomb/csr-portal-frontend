@@ -1,5 +1,6 @@
 // Topbar.jsx
 import { FaSignOutAlt } from 'react-icons/fa';
+
 import { useNavigation } from '../../context/useNavigation';
 
 const Topbar = ({ username, onLogout }) => {
@@ -17,7 +18,6 @@ const Topbar = ({ username, onLogout }) => {
   );
 };
 
-// 🌀 Convert ALL CAPS to Cycle Case
 function formatLabel(text = '') {
   return text
     .toLowerCase()

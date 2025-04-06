@@ -32,7 +32,6 @@ export default function CustomerProfile() {
 
       <CustomerProfileWrapper
         selectedCustomer={selectedCustomer}
-        setActiveNavItem={setActiveNavItem}
       />
     </div>
   );

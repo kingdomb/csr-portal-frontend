@@ -1,5 +1,5 @@
-// userSeed.js [simulated "user database"]
-export const users = [
+// csrUsers.js [simulated "user database"]
+export const csrUsers = [
   {
     id: 1,
     username: 'user1@amp.com',
@@ -15,7 +15,7 @@ export const users = [
 ];
 
 export const authenticateUser = (username, password) => {
-  const user = users.find(
+  const user = csrUsers.find(
     (u) => u.username === username && u.password === password
   );
   return user || null;

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { sampleCustomers } from '../../data/registeredCustomers.js';
+import { registeredUsers } from '../../data/registeredUsers.js';
 import Card from '../common/Card';
 import CustomerSearch from './CustomerSearch';
 import CustomerTable from './CustomerTable';
@@ -14,8 +14,8 @@ export default function CustomerWrapper({
   setLoading,
   setSelectedCustomer,
 }) {
-  const navigate = useNavigate(); // 👈 ADD
-  const [customers, setCustomers] = useState(sampleCustomers);
+  const navigate = useNavigate();
+  const [customers, setCustomers] = useState(registeredUsers);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchedCustomers, setSearchedCustomers] = useState(false);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
@@ -30,7 +30,7 @@ export default function CustomerWrapper({
   const handleCustomerClick = (customer) => {
     setSelectedCustomer(customer);
     setActiveNavItem('CUSTOMER PROFILE');
-    navigate('/customer-profile'); // 👈 ADD
+    navigate('/customer-profile');
   };
 
   return (
