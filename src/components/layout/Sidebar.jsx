@@ -13,16 +13,19 @@ import {
 
 import logo from '../../assets/amp-logo.svg';
 import { useNavigation } from '../../context/useNavigation';
+import { useCustomerModals } from '../../context/CustomerModalContext';
 
-const Sidebar = ({
-  selectedTransaction,
-  selectedSubscription,
-  setShowEditModal,
-  setShowEditTransactionModal,
-  setShowEditVehicleSubscriptionModal,
-}) => {
+const Sidebar = () => {
   const navigate = useNavigate();
   const { selectedCustomer, activeNavItem, setActiveNavItem } = useNavigation();
+
+  const {
+    setShowEditModal,
+    setShowEditTransactionModal,
+    setShowEditVehicleSubscriptionModal,
+    setSelectedTransaction,
+    setSelectedSubscription,
+  } = useCustomerModals();
 
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isCollapsedUI, setIsCollapsedUI] = useState(false);
@@ -45,16 +48,22 @@ const Sidebar = ({
       disabled: !selectedCustomer,
     },
     {
-      name: 'EDIT VEHICLE SUBSCRIPTIONS',
+      name: 'ADD VEHICLE SUBSCRIPTION',
       icon: <FaCar />,
-      action: () => selectedSubscription && setShowEditVehicleSubscriptionModal(true),
-      disabled: !selectedSubscription,
+      action: () => {
+        setSelectedSubscription(null);
+        setShowEditVehicleSubscriptionModal(true);
+      },
+      disabled: !selectedCustomer,
     },
     {
-      name: 'EDIT TRANSACTIONS',
+      name: 'ADD TRANSACTION',
       icon: <FaClipboardList />,
-      action: () => selectedTransaction && setShowEditTransactionModal(true),
-      disabled: !selectedTransaction,
+      action: () => {
+        setSelectedTransaction(null);
+        setShowEditTransactionModal(true);
+      },
+      disabled: !selectedCustomer,
     },
   ];
 
@@ -88,20 +97,11 @@ const Sidebar = ({
 
   const handleMainNavClick = (itemName, path) => {
     setActiveNavItem(itemName);
-    navigate(path); // 👈 navigate on click
+    navigate(path);
     if (
       !isMd &&
       (itemName !== 'CUSTOMER PROFILE' || customerProfileSubItems.every((sub) => sub.disabled))
     ) {
-      setIsCollapsed(true);
-      setManuallyToggled(true);
-    }
-  };
-
-  const handleSubItemClick = (subItem) => {
-    setActiveNavItem(subItem.name);
-    if (subItem.action) subItem.action();
-    if (!isMd) {
       setIsCollapsed(true);
       setManuallyToggled(true);
     }
@@ -150,22 +150,28 @@ const Sidebar = ({
 
                 {item.name === 'CUSTOMER PROFILE' && activeNavItem === 'CUSTOMER PROFILE' && (
                   <ul className="ml-4 mt-2">
-                    {customerProfileSubItems.map((subItem) => (
-                      <li key={subItem.name}>
-                        <button
-                          onClick={() => handleSubItemClick(subItem)}
-                          disabled={subItem.disabled}
-                          className={`flex items-center gap-2 p-2 w-full text-sm rounded-md ${
-                            subItem.disabled
-                              ? 'text-gray-400 cursor-not-allowed'
-                              : 'text-white hover:bg-[#475569]'
-                          }`}
-                        >
-                          <span>{subItem.icon}</span>
-                          {!isCollapsedUI && <span>{subItem.name}</span>}
-                        </button>
-                      </li>
-                    ))}
+                    {customerProfileSubItems.map((subItem) => {
+                      const isDisabled = subItem.disabled;
+                      const baseStyle =
+                        'flex items-center gap-2 p-2 w-full text-sm rounded-md transition-colors';
+                      const activeStyle = 'text-white hover:bg-[#475569]';
+                      const disabledStyle = 'text-gray-400 cursor-not-allowed';
+
+                      return (
+                        <li key={subItem.name}>
+                          <button
+                            onClick={() => {
+                              if (!isDisabled) subItem.action();
+                            }}
+                            disabled={isDisabled}
+                            className={`${baseStyle} ${isDisabled ? disabledStyle : activeStyle}`}
+                          >
+                            <span>{subItem.icon}</span>
+                            {!isCollapsedUI && <span>{subItem.name}</span>}
+                          </button>
+                        </li>
+                      );
+                    })}
                   </ul>
                 )}
               </li>

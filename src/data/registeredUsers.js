@@ -1,4 +1,4 @@
-export const sampleCustomers = [
+export const registeredUsers = [
   {
     Name: 'John Smith',
     Email: 'john.smith@example.com',
@@ -52,7 +52,7 @@ export const sampleCustomers = [
     Email: 'robert.w@example.com',
     'Account Status': 'Active',
     'Cust. Id': 'RM34567890',
-    Membership: 'Unlimited',
+    Membership: 'MAX Shield',
     Phone: '+17778889991',
   },
   {
@@ -60,7 +60,7 @@ export const sampleCustomers = [
     Email: 'jennifer.t@example.com',
     'Account Status': 'Expired',
     'Cust. Id': 'RM445566',
-    Membership: 'Unlimited',
+    Membership: 'MAX Shield',
     Phone: '+18889990001',
   },
   {
@@ -116,7 +116,7 @@ export const sampleCustomers = [
     Email: 'daniel.j@example.com',
     'Account Status': 'Active',
     'Cust. Id': 'RM778899',
-    Membership: 'Unlimited',
+    Membership: 'MAX Shield',
     Phone: '+17776668889',
   },
   {
@@ -140,7 +140,7 @@ export const sampleCustomers = [
     Email: 'susan.g@example.com',
     'Account Status': 'Active',
     'Cust. Id': 'RM990011',
-    Membership: 'Unlimited',
+    Membership: 'MAX Shield',
     Phone: '+12229991118',
   },
   {
@@ -204,7 +204,7 @@ export const sampleCustomers = [
     Email: 'karen.h@example.com',
     'Account Status': 'Active',
     'Cust. Id': 'RM889900',
-    Membership: 'Unlimited',
+    Membership: 'MAX Shield',
     Phone: '+12228889993',
   },
   {
@@ -276,7 +276,7 @@ export const sampleCustomers = [
     Email: 'kevin.n@example.com',
     'Account Status': 'Active',
     'Cust. Id': 'RM667788',
-    Membership: 'Unlimited',
+    Membership: 'MAX Shield',
     Phone: '+13337778882',
   },
   {
@@ -300,7 +300,7 @@ export const sampleCustomers = [
     Email: 'sharon.p@example.com',
     'Account Status': 'Active',
     'Cust. Id': 'RM889911',
-    Membership: 'Unlimited',
+    Membership: 'MAX Shield',
     Phone: '+16660001115',
   },
   {
@@ -356,7 +356,7 @@ export const sampleCustomers = [
     Email: 'timothy.e@example.com',
     'Account Status': 'Expired',
     'Cust. Id': 'RM990022',
-    Membership: 'Unlimited',
+    Membership: 'MAX Shield',
     Phone: '+15557778888',
   },
   {
@@ -380,7 +380,7 @@ export const sampleCustomers = [
     Email: 'donna.s@example.com',
     'Account Status': 'Expired',
     'Cust. Id': 'RM001133',
-    Membership: 'Unlimited',
+    Membership: 'MAX Shield',
     Phone: '+18880001112',
   },
   {
