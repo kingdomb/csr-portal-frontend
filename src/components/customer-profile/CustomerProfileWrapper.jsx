@@ -12,9 +12,11 @@ import CustomerDetailsCard from './CustomerDetailsCard';
 import CustomerDataTable from './CustomerDataTable';
 import Card from '../common/Card';
 import { useCustomerModals } from '../../context/CustomerModalContext';
+import { useCustomer } from '../../hooks/useCustomer';
 
-export default function CustomerProfileWrapper({ selectedCustomer, setSelectedCustomer }) {
+export default function CustomerProfileWrapper() {
   const navigate = useNavigate();
+  const { selectedCustomer, setSelectedCustomer } = useCustomer();
 
   const {
     showEditModal,
@@ -29,6 +31,20 @@ export default function CustomerProfileWrapper({ selectedCustomer, setSelectedCu
     setSelectedSubscription,
   } = useCustomerModals();
 
+  const [txnSort, setTxnSort] = useState({ key: null, direction: 'asc' });
+  const [subSort, setSubSort] = useState({ key: null, direction: 'asc' });
+
+  const [txnPage, setTxnPage] = useState(1);
+  const [subPage, setSubPage] = useState(1);
+
+  const customerTxns = registeredUserTxns.filter(
+    (t) => t['Cust. Id'] === selectedCustomer?.['Cust. Id']
+  );
+
+  const customerSubs = vehicleSubscriptions.filter(
+    (s) => s['Cust. Id'] === selectedCustomer?.['Cust. Id']
+  );
+
   const statusColors = {
     open: 'bg-blue-500 text-white',
     pending: 'bg-yellow-500 text-white',
@@ -38,25 +54,6 @@ export default function CustomerProfileWrapper({ selectedCustomer, setSelectedCu
     expired: 'bg-gray-500 text-white',
     cancelled: 'bg-red-500 text-white',
   };
-
-  const [txnSort, setTxnSort] = useState({ key: null, direction: 'asc' });
-  const [subSort, setSubSort] = useState({ key: null, direction: 'asc' });
-
-  const [txnPage, setTxnPage] = useState(1);
-  const [subPage, setSubPage] = useState(1);
-
-  const handleBack = () => {
-    navigate('/customers');
-  };
-
-  const formatDate = (dateStr) =>
-    new Date(dateStr).toLocaleDateString(undefined, {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
 
   const paginate = (items, currentPage, perPage) => {
     const start = (currentPage - 1) * perPage;
@@ -78,19 +75,9 @@ export default function CustomerProfileWrapper({ selectedCustomer, setSelectedCu
     );
   };
 
-  const customerTxns = registeredUserTxns.filter(
-    (t) => t['Cust. Id'] === selectedCustomer?.['Cust. Id']
-  );
-
-  const customerSubs = vehicleSubscriptions.filter(
-    (s) => s['Cust. Id'] === selectedCustomer?.['Cust. Id']
-  );
-
-  const customers = [selectedCustomer];
-
   return (
     <div className="p-6">
-      <CustomerHeader onBack={handleBack} />
+      <CustomerHeader onBack={() => navigate('/customers')} />
 
       {selectedCustomer ? (
         <>
@@ -109,12 +96,11 @@ export default function CustomerProfileWrapper({ selectedCustomer, setSelectedCu
               }))
             }
             sortConfig={txnSort}
-            formatDate={formatDate}
-            statusColors={statusColors}
             onRowClick={(txn) => {
               setSelectedTransaction(txn);
               setShowEditTransactionModal(true);
             }}
+            statusColors={statusColors}
           />
 
           <CustomerDataTable
@@ -132,11 +118,11 @@ export default function CustomerProfileWrapper({ selectedCustomer, setSelectedCu
             }
             sortConfig={subSort}
             type="subscriptions"
-            statusColors={statusColors}
             onRowClick={(sub) => {
               setSelectedSubscription(sub);
               setShowEditVehicleSubscriptionModal(true);
             }}
+            statusColors={statusColors}
           />
         </>
       ) : (
@@ -149,7 +135,7 @@ export default function CustomerProfileWrapper({ selectedCustomer, setSelectedCu
         <EditCustomerModal
           selectedCustomer={selectedCustomer}
           setSelectedCustomer={setSelectedCustomer}
-          customers={customers}
+          customers={[selectedCustomer]}
           setCustomers={() => {}}
           setShowEditModal={setShowEditModal}
         />

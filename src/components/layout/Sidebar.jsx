@@ -14,6 +14,7 @@ import {
 
 import { useNavigation } from '../../hooks/useNavigation.js';
 import { useCustomerModals } from '../../context/CustomerModalContext';
+import { useCustomer } from '../../hooks/useCustomer';
 import SidebarBranding from './SidebarBranding';
 import SubMenuList from './SubMenuList';
 import useAuth from '../../authentication/useAuth';
@@ -22,6 +23,7 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const { logout } = useAuth();
   const { selectedCustomer, activeNavItem, setActiveNavItem } = useNavigation();
+  const { setSelectedCustomer } = useCustomer();
 
   const {
     setShowEditModal,
@@ -42,7 +44,16 @@ const Sidebar = () => {
 
   const mainNavItems = [
     { name: 'CUSTOMERS', icon: <FaUsers />, path: '/customers' },
-    { name: 'CUSTOMER PROFILE', icon: <FaFolder />, path: '/customer-profile' },
+    {
+      name: 'CUSTOMER PROFILE',
+      icon: <FaFolder />,
+      path: '/customer-profile',
+      onClick: () => {
+        if (selectedCustomer) {
+          setSelectedCustomer(selectedCustomer);
+        }
+      },
+    },
   ];
 
   const customerProfileSubItems = [
@@ -98,9 +109,11 @@ const Sidebar = () => {
     return () => timeoutRef.current && clearTimeout(timeoutRef.current);
   }, [isCollapsed]);
 
-  const handleMainNavClick = (itemName, path) => {
+  const handleMainNavClick = (itemName, path, customClick) => {
     setActiveNavItem(itemName);
+    if (customClick) customClick();
     navigate(path);
+
     if (
       !isLargeScreen &&
       (itemName !== 'CUSTOMER PROFILE' || customerProfileSubItems.every((sub) => sub.disabled))
@@ -135,7 +148,7 @@ const Sidebar = () => {
             {mainNavItems.map((item) => (
               <li key={item.name}>
                 <div
-                  onClick={() => handleMainNavClick(item.name, item.path)}
+                  onClick={() => handleMainNavClick(item.name, item.path, item.onClick)}
                   className={`flex items-center gap-3 p-3 cursor-pointer transition-colors duration-200 hover:bg-[#334155] ${
                     isCollapsedUI ? 'justify-center' : ''
                   } ${activeNavItem === item.name ? 'bg-[#334155]' : ''}`}
@@ -153,7 +166,6 @@ const Sidebar = () => {
           </ul>
         </nav>
 
-        {/* Logout button below 448px only */}
         <div className="xl:hidden absolute bottom-12 left-0 w-full flex justify-center">
           <button
             onClick={logout}
