@@ -19,7 +19,7 @@ import SidebarBranding from './SidebarBranding';
 import SubMenuList from './SubMenuList';
 import useAuth from '../../authentication/useAuth';
 
-const Sidebar = () => {
+const Sidebar = ({ forceCollapse = false }) => {
   const navigate = useNavigate();
   const { logout } = useAuth();
   const { activeNavItem, setActiveNavItem } = useNavigation();
@@ -33,14 +33,8 @@ const Sidebar = () => {
     setSelectedSubscription,
   } = useCustomerModals();
 
-  const [isCollapsed, setIsCollapsed] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return window.innerWidth < 1280;
-    }
-    return false;
-  });
-
-  const [isCollapsedUI, setIsCollapsedUI] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(forceCollapse);
+  const [isCollapsedUI, setIsCollapsedUI] = useState(forceCollapse);
   const [isFooterVisible, setIsFooterVisible] = useState(false);
   const [isLargeScreen, setIsLargeScreen] = useState(false);
   const [manuallyToggled, setManuallyToggled] = useState(false);
