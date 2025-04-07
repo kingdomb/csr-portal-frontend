@@ -8,13 +8,9 @@ import CustomerSearch from './CustomerSearch';
 import CustomerTable from './CustomerTable';
 import CustomerPagination from './CustomerPagination';
 
-export default function CustomerWrapper({
-  setActiveNavItem,
-  loading,
-  setLoading,
-  setSelectedCustomer,
-}) {
+export default function CustomerWrapper({ setActiveNavItem, setSelectedCustomer }) {
   const navigate = useNavigate();
+  const [allCustomers] = useState(registeredUsers);
   const [customers, setCustomers] = useState(registeredUsers);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchedCustomers, setSearchedCustomers] = useState(false);
@@ -37,8 +33,6 @@ export default function CustomerWrapper({
     <div className="p-6 bg-[#1E293B] text-white">
       <Card className="mb-8">
         <CustomerSearch
-          loading={loading}
-          setLoading={setLoading}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           customers={customers}
@@ -46,12 +40,12 @@ export default function CustomerWrapper({
           setSearchedCustomers={setSearchedCustomers}
           searchedCustomers={searchedCustomers}
           setCurrentPage={setCurrentPage}
+          allCustomers={allCustomers}
         />
       </Card>
 
       <Card className="mb-6 p-4">
         <CustomerTable
-          loading={loading}
           customers={currentCustomers}
           sortConfig={sortConfig}
           requestSort={(key) => {

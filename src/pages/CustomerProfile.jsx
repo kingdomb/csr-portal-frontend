@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
-import { useNavigation } from '../context/useNavigation';
+import { useNavigation } from '../hooks/useNavigation.js';
 import CustomerProfileWrapper from '../components/customer-profile/CustomerProfileWrapper';
 
 export default function CustomerProfile() {
