@@ -11,17 +11,31 @@ const Login = () => {
   const passwordRef = useRef();
   const { login } = useAuth();
   const navigate = useNavigate();
+
   const [error, setError] = useState('');
+  const [validationErrors, setValidationErrors] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const username = usernameRef.current.value;
-    const password = passwordRef.current.value;
+    setError('');
+    const username = usernameRef.current.value.trim();
+    const password = passwordRef.current.value.trim();
+
+    const errors = {};
+    if (!username) errors.username = 'Email is required.';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username))
+      errors.username = 'Enter a valid email address.';
+
+    if (!password) errors.password = 'Password is required.';
+    else if (password.length > 16) errors.password = 'Password must be 16 characters or fewer.';
+
+    setValidationErrors(errors);
+    if (Object.keys(errors).length > 0) return;
 
     const user = authenticateUser(username, password);
 
     if (!user) {
-      setError('Invalid username or password please contact your site admin.');
+      setError('Invalid username or password. Please contact your site admin.');
     } else {
       login(user);
       navigate('/');
@@ -42,18 +56,34 @@ const Login = () => {
         {error && <p className="text-red-400 text-sm text-center">{error}</p>}
 
         <div className="space-y-4">
-          <input
-            ref={usernameRef}
-            type="text"
-            placeholder="Username"
-            className="w-full px-4 py-2 rounded-3xl bg-[#1E293B] text-white border border-gray-600 focus:outline-none focus:ring"
-          />
-          <input
-            ref={passwordRef}
-            type="password"
-            placeholder="Password"
-            className="w-full px-4 py-2 rounded-3xl bg-[#1E293B] text-white border border-gray-600 focus:outline-none focus:ring"
-          />
+          <div>
+            <input
+              ref={usernameRef}
+              type="text"
+              placeholder="Username"
+              className={`w-full px-4 py-2 rounded-3xl bg-[#1E293B] text-white border ${
+                validationErrors.username ? 'border-red-500' : 'border-gray-600'
+              } focus:outline-none focus:ring`}
+            />
+            {validationErrors.username && (
+              <p className="text-red-500 text-xs mt-1">{validationErrors.username}</p>
+            )}
+          </div>
+          <div>
+            <input
+              ref={passwordRef}
+              type="password"
+              placeholder="Password"
+              maxLength={16}
+              className={`w-full px-4 py-2 rounded-3xl bg-[#1E293B] text-white border ${
+                validationErrors.password ? 'border-red-500' : 'border-gray-600'
+              } focus:outline-none focus:ring`}
+            />
+            {validationErrors.password && (
+              <p className="text-red-500 text-xs mt-1">{validationErrors.password}</p>
+            )}
+            <p className="text-gray-500 text-xs mt-1">Max 16 characters</p>
+          </div>
         </div>
 
         <div className="flex justify-center">
