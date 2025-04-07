@@ -11,6 +11,7 @@ import NavigationProvider from './context/NavigationContext';
 import { CustomerModalProvider } from './context/CustomerModalContext';
 import { LoadingProvider } from './context/LoadingContext';
 import { CustomerTransactionsProvider } from './context/CustomerTransactionsContext';
+import { CustomerSubscriptionProvider } from './context/CustomerSubscriptionContext';
 import PrivateRoute from './authentication/PrivateRoute';
 import './index.css';
 
@@ -23,17 +24,19 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <CustomerModalProvider>
               <LoadingProvider>
                 <CustomerTransactionsProvider>
-                  <Routes>
-                    <Route path="/login" element={<Login />} />
-                    <Route
-                      path="/*"
-                      element={
-                        <PrivateRoute>
-                          <App />
-                        </PrivateRoute>
-                      }
-                    />
-                  </Routes>
+                  <CustomerSubscriptionProvider>
+                    <Routes>
+                      <Route path="/login" element={<Login />} />
+                      <Route
+                        path="/*"
+                        element={
+                          <PrivateRoute>
+                            <App />
+                          </PrivateRoute>
+                        }
+                      />
+                    </Routes>
+                  </CustomerSubscriptionProvider>
                 </CustomerTransactionsProvider>
               </LoadingProvider>
             </CustomerModalProvider>

@@ -27,7 +27,7 @@ export default function CustomerWrapper({ setActiveNavItem }) {
   const totalPages = Math.ceil(customers.length / customersPerPage);
 
   const handleCustomerClick = (customer) => {
-    setSelectedCustomer(customer); // ✅ Now via context
+    setSelectedCustomer(customer); 
     setActiveNavItem('CUSTOMER PROFILE');
     navigate('/customer-profile');
   };

@@ -22,8 +22,8 @@ import useAuth from '../../authentication/useAuth';
 const Sidebar = () => {
   const navigate = useNavigate();
   const { logout } = useAuth();
-  const { selectedCustomer, activeNavItem, setActiveNavItem } = useNavigation();
-  const { setSelectedCustomer } = useCustomer();
+  const { activeNavItem, setActiveNavItem } = useNavigation();
+  const { selectedCustomer } = useCustomer();
 
   const {
     setShowEditModal,
@@ -44,16 +44,7 @@ const Sidebar = () => {
 
   const mainNavItems = [
     { name: 'CUSTOMERS', icon: <FaUsers />, path: '/customers' },
-    {
-      name: 'CUSTOMER PROFILE',
-      icon: <FaFolder />,
-      path: '/customer-profile',
-      onClick: () => {
-        if (selectedCustomer) {
-          setSelectedCustomer(selectedCustomer);
-        }
-      },
-    },
+    { name: 'CUSTOMER PROFILE', icon: <FaFolder />, path: '/customer-profile' },
   ];
 
   const customerProfileSubItems = [
@@ -109,9 +100,8 @@ const Sidebar = () => {
     return () => timeoutRef.current && clearTimeout(timeoutRef.current);
   }, [isCollapsed]);
 
-  const handleMainNavClick = (itemName, path, customClick) => {
+  const handleMainNavClick = (itemName, path) => {
     setActiveNavItem(itemName);
-    if (customClick) customClick();
     navigate(path);
 
     if (
@@ -148,7 +138,7 @@ const Sidebar = () => {
             {mainNavItems.map((item) => (
               <li key={item.name}>
                 <div
-                  onClick={() => handleMainNavClick(item.name, item.path, item.onClick)}
+                  onClick={() => handleMainNavClick(item.name, item.path)}
                   className={`flex items-center gap-3 p-3 cursor-pointer transition-colors duration-200 hover:bg-[#334155] ${
                     isCollapsedUI ? 'justify-center' : ''
                   } ${activeNavItem === item.name ? 'bg-[#334155]' : ''}`}

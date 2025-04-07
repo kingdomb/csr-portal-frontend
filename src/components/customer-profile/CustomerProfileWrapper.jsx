@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { registeredUserTxns } from '../../data/registeredUserTxns.js';
-import { vehicleSubscriptions } from '../../data/vehicleSubscriptions.js';
 import EditTransactionModal from '../../modals/EditTransactionModal';
 import EditVehicleSubscriptionModal from '../../modals/EditVehicleSubscriptionModal';
 import EditCustomerModal from '../../modals/EditCustomerModal';
@@ -14,11 +13,13 @@ import Card from '../common/Card';
 import { useCustomerModals } from '../../context/CustomerModalContext';
 import { useCustomer } from '../../hooks/useCustomer';
 import { useCustomerTransactions } from '../../hooks/useCustomerTransactions';
+import { useCustomerSubscriptions } from '../../hooks/useCustomerSubscriptions';
 
 export default function CustomerProfileWrapper() {
   const navigate = useNavigate();
   const { selectedCustomer, setSelectedCustomer } = useCustomer();
   const { customerTransactions, setCustomerTransactions } = useCustomerTransactions();
+  const { customerSubscriptions } = useCustomerSubscriptions(); 
 
   const {
     showEditModal,
@@ -39,7 +40,7 @@ export default function CustomerProfileWrapper() {
   const [txnPage, setTxnPage] = useState(1);
   const [subPage, setSubPage] = useState(1);
 
-  const customerSubs = vehicleSubscriptions.filter(
+  const customerSubs = customerSubscriptions.filter(
     (s) => s['Cust. Id'] === selectedCustomer?.['Cust. Id']
   );
 
@@ -73,7 +74,6 @@ export default function CustomerProfileWrapper() {
     );
   };
 
-  // Load customer transactions once customer is selected
   useEffect(() => {
     if (selectedCustomer) {
       const txns = registeredUserTxns.filter((t) => t['Cust. Id'] === selectedCustomer['Cust. Id']);
@@ -161,8 +161,6 @@ export default function CustomerProfileWrapper() {
           selectedSubscription={selectedSubscription}
           setSelectedSubscription={setSelectedSubscription}
           setShowEditModal={setShowEditVehicleSubscriptionModal}
-          vehicleSubscriptions={customerSubs}
-          setVehicleSubscriptions={() => {}}
         />
       )}
     </div>
