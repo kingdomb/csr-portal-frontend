@@ -1,14 +1,14 @@
 // CustomerTable.jsx
-import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
+import { FaChevronUp, FaChevronDown, FaArrowLeft } from 'react-icons/fa';
 
 export default function CustomerTable({
   customers,
   sortConfig,
   requestSort,
   handleCustomerClick,
+  searchedCustomers,
+  resetSearch,
 }) {
-  if (!customers || customers.length === 0) return null;
-
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-700 text-white text-xs md:text-sm">
@@ -43,36 +43,55 @@ export default function CustomerTable({
           </tr>
         </thead>
         <tbody className="bg-[#0F172A] divide-y divide-gray-700">
-          {customers.map((customer, i) => {
-            const status = customer['Account Status'];
-            const statusClass =
-              status === 'Active'
-                ? 'bg-green-500 text-white'
-                : status === 'Expired'
-                  ? 'bg-red-500 text-white'
-                  : 'bg-gray-700 text-white';
+          {customers.length === 0 ? (
+            <tr>
+              <td colSpan={4} className="px-6 py-8 text-center text-gray-400 text-sm">
+                <p>No customers found.</p>
+                {searchedCustomers && (
+                  <button
+                    onClick={resetSearch}
+                    className="mt-4 inline-flex items-center text-blue-500 hover:text-blue-700 text-xs md:text-sm"
+                  >
+                    <FaArrowLeft className="mr-2 w-4 h-4" />
+                    Clear Search
+                  </button>
+                )}
+              </td>
+            </tr>
+          ) : (
+            customers.map((customer, i) => {
+              const status = customer['Account Status'];
+              const statusClass =
+                status === 'Active'
+                  ? 'bg-green-500 text-white'
+                  : status === 'Expired'
+                    ? 'bg-red-500 text-white'
+                    : 'bg-gray-700 text-white';
 
-            return (
-              <tr
-                key={i}
-                className="hover:bg-[#1e293b] cursor-pointer transition-colors duration-150"
-                onClick={() => handleCustomerClick(customer)}
-              >
-                <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap">{customer['Name']}</td>
-                <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap hidden 6xl:table-cell">
-                  {customer['Email']}
-                </td>
-                <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap hidden 6xl:table-cell">
-                  {customer['Phone']}
-                </td>
-                <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusClass}`}>
-                    {status}
-                  </span>
-                </td>
-              </tr>
-            );
-          })}
+              return (
+                <tr
+                  key={i}
+                  className="hover:bg-[#1e293b] cursor-pointer transition-colors duration-150"
+                  onClick={() => handleCustomerClick(customer)}
+                >
+                  <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap">
+                    {customer['Name']}
+                  </td>
+                  <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap hidden 6xl:table-cell">
+                    {customer['Email']}
+                  </td>
+                  <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap hidden 6xl:table-cell">
+                    {customer['Phone']}
+                  </td>
+                  <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap">
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusClass}`}>
+                      {status}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })
+          )}
         </tbody>
       </table>
     </div>
