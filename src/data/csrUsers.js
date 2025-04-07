@@ -2,13 +2,13 @@
 export const csrUsers = [
   {
     id: 1,
-    username: 'user1@xyz.com',
+    username: 'user1@amp.com',
     password: 'password123*', // TODO hash this
     name: 'Jane Doe',
   },
   {
     id: 2,
-    username: 'user2@xyz.com',
+    username: 'user2@amp.com',
     password: 'password456*', // TODO hash this
     name: 'John Smith',
   },
