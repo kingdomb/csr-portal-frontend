@@ -13,6 +13,7 @@ export default function EditTransactionModal({
   setShowEditModal,
 }) {
   const isNew = !selectedTransaction;
+
   const [edited, setEdited] = useState(
     selectedTransaction ?? {
       'Transaction ID': '',
@@ -24,9 +25,30 @@ export default function EditTransactionModal({
     }
   );
 
+  const [errors, setErrors] = useState({});
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEdited((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const validateFields = () => {
+    const requiredFields = [
+      'Transaction ID',
+      'Cust. Id',
+      'Transaction Date',
+      'Amount',
+      'Payment Method',
+      'Status',
+    ];
+    const newErrors = {};
+    for (const field of requiredFields) {
+      if (!edited[field]?.toString().trim()) {
+        newErrors[field] = 'Required';
+      }
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const close = () => {
@@ -36,15 +58,23 @@ export default function EditTransactionModal({
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const trimmed = Object.fromEntries(
+      Object.entries(edited).map(([k, v]) => [k, v?.toString().trim()])
+    );
+    setEdited(trimmed);
+
+    if (!validateFields()) return;
+
     if (isNew) {
-      setTransactions([...registeredUserTxns, edited]);
+      setTransactions([...registeredUserTxns, trimmed]);
     } else {
       const updated = registeredUserTxns.map((txn) =>
-        txn['Transaction ID'] === edited['Transaction ID'] ? edited : txn
+        txn['Transaction ID'] === trimmed['Transaction ID'] ? trimmed : txn
       );
       setTransactions(updated);
     }
-    setSelectedTransaction(edited);
+    setSelectedTransaction(trimmed);
     close();
   };
 
@@ -78,6 +108,8 @@ export default function EditTransactionModal({
           value={edited['Transaction ID']}
           onChange={handleChange}
           disabled={!isNew}
+          placeholder={isNew ? 'Enter unique ID' : ''}
+          error={errors['Transaction ID']}
         />
         <InputField
           label="Customer RM No."
@@ -85,6 +117,8 @@ export default function EditTransactionModal({
           value={edited['Cust. Id']}
           onChange={handleChange}
           disabled={!isNew}
+          placeholder={isNew ? 'Enter RM number' : ''}
+          error={errors['Cust. Id']}
         />
         <InputField
           label="Transaction Date"
@@ -92,6 +126,7 @@ export default function EditTransactionModal({
           type="datetime-local"
           value={edited['Transaction Date']}
           onChange={handleChange}
+          error={errors['Transaction Date']}
         />
         <InputField
           label="Amount"
@@ -99,6 +134,8 @@ export default function EditTransactionModal({
           type="number"
           value={edited['Amount']}
           onChange={handleChange}
+          placeholder={isNew ? 'e.g. 100.00' : ''}
+          error={errors['Amount']}
         />
         <SelectField
           label="Payment Method"
@@ -106,6 +143,7 @@ export default function EditTransactionModal({
           value={edited['Payment Method']}
           options={['Cash', 'Credit Card', 'Bank Transfer', 'Mobile Money']}
           onChange={handleChange}
+          error={errors['Payment Method']}
         />
         <SelectField
           label="Status"
@@ -113,6 +151,7 @@ export default function EditTransactionModal({
           value={edited['Status']}
           options={['Pending', 'Completed', 'Failed', 'Refunded']}
           onChange={handleChange}
+          error={errors['Status']}
         />
       </form>
     </ModalCard>

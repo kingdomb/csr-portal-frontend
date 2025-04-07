@@ -7,16 +7,31 @@ import InputField from '../components/common/InputField';
 
 export default function EditCustomerModal({
   selectedCustomer,
-  setSelectedCustomer,
+  setSelectedCustomer, // optional
   customers,
   setCustomers,
   setShowEditModal,
 }) {
   const [edited, setEdited] = useState({ ...selectedCustomer });
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEdited((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const validateFields = () => {
+    const required = ['Name', 'Email', 'Account Status', 'Membership', 'Cust. Id', 'Phone'];
+    const newErrors = {};
+
+    for (const key of required) {
+      if (!edited[key]?.toString().trim()) {
+        newErrors[key] = 'Required';
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const close = () => {
@@ -25,9 +40,17 @@ export default function EditCustomerModal({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const updated = customers.map((c) => (c['Cust. Id'] === edited['Cust. Id'] ? edited : c));
+
+    const trimmed = Object.fromEntries(
+      Object.entries(edited).map(([k, v]) => [k, v?.toString().trim()])
+    );
+    setEdited(trimmed);
+
+    if (!validateFields()) return;
+
+    const updated = customers.map((c) => (c['Cust. Id'] === trimmed['Cust. Id'] ? trimmed : c));
     setCustomers(updated);
-    setSelectedCustomer(edited);
+    if (setSelectedCustomer) setSelectedCustomer(trimmed); // guard optional
     close();
   };
 
@@ -55,13 +78,20 @@ export default function EditCustomerModal({
       }
     >
       <form id="editCustomerForm" onSubmit={handleSubmit} className="space-y-4">
-        <InputField label="Name" name="Name" value={edited.Name} onChange={handleChange} />
+        <InputField
+          label="Name"
+          name="Name"
+          value={edited.Name}
+          onChange={handleChange}
+          error={errors['Name']}
+        />
         <InputField
           label="Great ID (Email)"
           name="Email"
           type="email"
           value={edited['Email']}
           onChange={handleChange}
+          error={errors['Email']}
         />
         <SelectField
           label="ID Type"
@@ -69,20 +99,29 @@ export default function EditCustomerModal({
           value={edited['Account Status']}
           options={['Passport', 'Driver License', 'National ID']}
           onChange={handleChange}
+          error={errors['Account Status']}
         />
         <InputField
           label="ID Number"
           name="Membership"
           value={edited['Membership']}
           onChange={handleChange}
+          error={errors['Membership']}
         />
-        <InputField label="RM Number" name="Cust. Id" value={edited['Cust. Id']} disabled />
+        <InputField
+          label="RM Number"
+          name="Cust. Id"
+          value={edited['Cust. Id']}
+          disabled
+          error={errors['Cust. Id']}
+        />
         <InputField
           label="Phone"
           name="Phone"
           value={edited['Phone']}
           onChange={handleChange}
           type="tel"
+          error={errors['Phone']}
         />
       </form>
     </ModalCard>
