@@ -4,15 +4,15 @@ import { useState } from 'react';
 import ModalCard from '../components/common/ModalCard';
 import InputField from '../components/common/InputField';
 import SelectField from '../components/common/SelectField';
+import { useCustomerTransactions } from '../hooks/useCustomerTransactions';
 
 export default function EditTransactionModal({
   selectedTransaction,
   setSelectedTransaction,
-  registeredUserTxns = [],
-  setTransactions,
   setShowEditModal,
 }) {
   const isNew = !selectedTransaction;
+  const { customerTransactions, setCustomerTransactions } = useCustomerTransactions();
 
   const [edited, setEdited] = useState(
     selectedTransaction ?? {
@@ -67,13 +67,14 @@ export default function EditTransactionModal({
     if (!validateFields()) return;
 
     if (isNew) {
-      setTransactions([...registeredUserTxns, trimmed]);
+      setCustomerTransactions([...customerTransactions, trimmed]);
     } else {
-      const updated = registeredUserTxns.map((txn) =>
+      const updated = customerTransactions.map((txn) =>
         txn['Transaction ID'] === trimmed['Transaction ID'] ? trimmed : txn
       );
-      setTransactions(updated);
+      setCustomerTransactions(updated);
     }
+
     setSelectedTransaction(trimmed);
     close();
   };

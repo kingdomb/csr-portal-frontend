@@ -1,3 +1,4 @@
+// CustomerDataTable.jsx
 import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
 
 export default function CustomerDataTable({
@@ -11,24 +12,29 @@ export default function CustomerDataTable({
   formatDate,
   statusColors,
   onRowClick,
+  setCurrentPage,
 }) {
   if (!data || data.length === 0) return null;
 
   const getCellContent = (row, col) => {
     const value = row[col];
-
     if (col.toLowerCase().includes('date') && formatDate) return formatDate(value);
     if (col === 'Status' && statusColors) {
       const colorClass = statusColors[value?.toLowerCase()] || '';
       return <span className={`px-2 py-1 rounded-full text-xs ${colorClass}`}>{value}</span>;
     }
-
     return value;
   };
 
   const renderClass = (col) => {
     if (col === 'Transaction ID' || col === 'Subscription ID' || col === 'Status') return '';
     return 'hidden 5xl:table-cell';
+  };
+
+  const handlePrev = () => setCurrentPage?.((prev) => Math.max(prev - 1, 1));
+  const handleNext = () => {
+    const maxPage = Math.ceil(totalItems / 5);
+    setCurrentPage?.((prev) => Math.min(prev + 1, maxPage));
   };
 
   return (
@@ -77,9 +83,29 @@ export default function CustomerDataTable({
           </tbody>
         </table>
       </div>
-      <div className="mt-3 text-xs text-gray-400">
-        Showing {Math.min((currentPage - 1) * 5 + 1, totalItems)}–
-        {Math.min(currentPage * 5, totalItems)} of {totalItems}
+
+      <div className="mt-3 flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs text-gray-400 gap-2">
+        <div>
+          Showing {Math.min((currentPage - 1) * 5 + 1, totalItems)}–
+          {Math.min(currentPage * 5, totalItems)} of {totalItems}
+        </div>
+
+        {setCurrentPage && totalItems > 5 && (
+          <div className="flex gap-2">
+            <button
+              onClick={handlePrev}
+              className="px-3 py-1 rounded-md border border-gray-500 hover:border-gray-400 text-gray-300 hover:text-white transition"
+            >
+              Previous
+            </button>
+            <button
+              onClick={handleNext}
+              className="px-3 py-1 rounded-md border border-gray-500 hover:border-gray-400 text-gray-300 hover:text-white transition"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

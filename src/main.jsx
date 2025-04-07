@@ -10,6 +10,7 @@ import { CustomerProvider } from './context/CustomerContext';
 import NavigationProvider from './context/NavigationContext';
 import { CustomerModalProvider } from './context/CustomerModalContext';
 import { LoadingProvider } from './context/LoadingContext';
+import { CustomerTransactionsProvider } from './context/CustomerTransactionsContext';
 import PrivateRoute from './authentication/PrivateRoute';
 import './index.css';
 
@@ -21,17 +22,19 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <NavigationProvider>
             <CustomerModalProvider>
               <LoadingProvider>
-                <Routes>
-                  <Route path="/login" element={<Login />} />
-                  <Route
-                    path="/*"
-                    element={
-                      <PrivateRoute>
-                        <App />
-                      </PrivateRoute>
-                    }
-                  />
-                </Routes>
+                <CustomerTransactionsProvider>
+                  <Routes>
+                    <Route path="/login" element={<Login />} />
+                    <Route
+                      path="/*"
+                      element={
+                        <PrivateRoute>
+                          <App />
+                        </PrivateRoute>
+                      }
+                    />
+                  </Routes>
+                </CustomerTransactionsProvider>
               </LoadingProvider>
             </CustomerModalProvider>
           </NavigationProvider>

@@ -3,12 +3,13 @@ import { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 import { useNavigation } from '../hooks/useNavigation.js';
+import { useCustomer } from '../hooks/useCustomer.js'; 
 import CustomerProfileWrapper from '../components/customer-profile/CustomerProfileWrapper';
 
 export default function CustomerProfile() {
-  const { selectedCustomer, setActiveNavItem } = useNavigation();
+  const { setActiveNavItem } = useNavigation();
   const navigate = useNavigate();
-
+  const { selectedCustomer } = useCustomer(); 
   useEffect(() => {
     if (!selectedCustomer) {
       navigate('/customers');
@@ -32,7 +33,7 @@ export default function CustomerProfile() {
 
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto px-6 pb-6">
-        <CustomerProfileWrapper selectedCustomer={selectedCustomer} />
+        <CustomerProfileWrapper />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 // CustomerProfileWrapper.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { registeredUserTxns } from '../../data/registeredUserTxns.js';
@@ -13,10 +13,12 @@ import CustomerDataTable from './CustomerDataTable';
 import Card from '../common/Card';
 import { useCustomerModals } from '../../context/CustomerModalContext';
 import { useCustomer } from '../../hooks/useCustomer';
+import { useCustomerTransactions } from '../../hooks/useCustomerTransactions';
 
 export default function CustomerProfileWrapper() {
   const navigate = useNavigate();
   const { selectedCustomer, setSelectedCustomer } = useCustomer();
+  const { customerTransactions, setCustomerTransactions } = useCustomerTransactions();
 
   const {
     showEditModal,
@@ -36,10 +38,6 @@ export default function CustomerProfileWrapper() {
 
   const [txnPage, setTxnPage] = useState(1);
   const [subPage, setSubPage] = useState(1);
-
-  const customerTxns = registeredUserTxns.filter(
-    (t) => t['Cust. Id'] === selectedCustomer?.['Cust. Id']
-  );
 
   const customerSubs = vehicleSubscriptions.filter(
     (s) => s['Cust. Id'] === selectedCustomer?.['Cust. Id']
@@ -75,6 +73,14 @@ export default function CustomerProfileWrapper() {
     );
   };
 
+  // Load customer transactions once customer is selected
+  useEffect(() => {
+    if (selectedCustomer) {
+      const txns = registeredUserTxns.filter((t) => t['Cust. Id'] === selectedCustomer['Cust. Id']);
+      setCustomerTransactions(txns);
+    }
+  }, [selectedCustomer, setCustomerTransactions]);
+
   return (
     <div className="p-6">
       <CustomerHeader onBack={() => navigate('/customers')} />
@@ -86,9 +92,10 @@ export default function CustomerProfileWrapper() {
           <CustomerDataTable
             title="Customer Transactions"
             columns={['Transaction ID', 'Transaction Date', 'Amount', 'Payment Method', 'Status']}
-            data={paginate(sortData(customerTxns, txnSort), txnPage, 5)}
+            data={paginate(sortData(customerTransactions, txnSort), txnPage, 5)}
             currentPage={txnPage}
-            totalItems={customerTxns.length}
+            setCurrentPage={setTxnPage}
+            totalItems={customerTransactions.length}
             onSort={(key) =>
               setTxnSort((prev) => ({
                 key,
@@ -146,8 +153,6 @@ export default function CustomerProfileWrapper() {
           selectedTransaction={selectedTransaction}
           setSelectedTransaction={setSelectedTransaction}
           setShowEditModal={setShowEditTransactionModal}
-          registeredUserTxns={customerTxns}
-          setTransactions={() => {}}
         />
       )}
 
