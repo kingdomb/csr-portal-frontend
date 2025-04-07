@@ -6,6 +6,7 @@ import Topbar from './components/layout/Topbar';
 import useAuth from './authentication/useAuth.js';
 import CustomersPage from './pages/Customers';
 import CustomerProfile from './pages/CustomerProfile';
+import LoadingOverlay from './components/common/LoadingOverlay';
 
 function App() {
   const { auth, logout } = useAuth();
@@ -16,6 +17,7 @@ function App() {
       <Sidebar />
       <div className="flex flex-col flex-1 h-full">
         <Topbar username={username} onLogout={logout} />
+
         <div className="flex flex-col flex-1 h-[calc(100vh-4rem)] overflow-y-auto bg-[#1E293B]">
           <Routes>
             <Route path="/" element={<Navigate to="/customers" replace />} />
@@ -24,6 +26,7 @@ function App() {
           </Routes>
         </div>
       </div>
+      <LoadingOverlay />
     </div>
   );
 }

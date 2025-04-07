@@ -1,36 +1,39 @@
 // CustomerSearch.jsx
 import { FaArrowLeft, FaSearch } from 'react-icons/fa';
 
+import { useLoading } from '../../hooks/useLoading.js';
+
 export default function CustomerSearch({
-  loading,
-  setLoading,
   searchQuery,
   setSearchQuery,
-  customers,
   setCustomers,
   setSearchedCustomers,
   searchedCustomers,
   setCurrentPage,
+  allCustomers,
 }) {
+  const { loading, setLoading } = useLoading();
+
   const handleSearch = (e) => {
     e.preventDefault();
     setLoading(true);
+
     setTimeout(() => {
-      const filtered = customers.filter((customer) =>
-        Object.values(customer).some((val) =>
-          val.toString().toLowerCase().includes(searchQuery.toLowerCase())
+      const filtered = allCustomers.filter((customer) =>
+        ['Name', 'Email', 'Phone'].some((field) =>
+          customer[field]?.toString().toLowerCase().includes(searchQuery.trim().toLowerCase())
         )
       );
-      setSearchedCustomers(true);
       setCustomers(filtered);
+      setSearchedCustomers(true);
       setCurrentPage(1);
       setLoading(false);
-    }, 800);
+    }, 300);
   };
 
   const resetSearch = () => {
     setSearchQuery('');
-    setCustomers(customers);
+    setCustomers(allCustomers);
     setSearchedCustomers(false);
     setCurrentPage(1);
   };
@@ -42,7 +45,7 @@ export default function CustomerSearch({
       {searchedCustomers && (
         <div className="flex flex-wrap items-center gap-2 md:gap-4 mb-2 text-xs md:text-sm">
           <div className="text-gray-600">Search Results:</div>
-          <div className="font-medium">{`${customers.length} customers found`}</div>
+          <div className="font-medium">{`${allCustomers.length} customers searched`}</div>
           <button
             onClick={resetSearch}
             className="flex items-center text-blue-600 hover:text-blue-800"
@@ -63,7 +66,7 @@ export default function CustomerSearch({
               type="text"
               id="customerSearch"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => setSearchQuery(e.target.value.trimStart())}
               className="peer w-full bg-[#1E293B] text-white placeholder-transparent border-none px-3 md:px-4 pt-6 md:pt-7 pb-1 text-sm md:text-[17px] focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Search"
             />

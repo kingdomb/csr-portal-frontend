@@ -1,6 +1,7 @@
 // Topbar.jsx
 import { FaSignOutAlt } from 'react-icons/fa';
-import { useNavigation } from '../../context/useNavigation';
+
+import { useNavigation } from '../../hooks/useNavigation.js';
 
 const Topbar = ({ username, onLogout }) => {
   const { activeNavItem } = useNavigation();

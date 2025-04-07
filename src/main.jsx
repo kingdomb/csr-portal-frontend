@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import { AuthProvider } from './authentication/AuthProvider';
 import NavigationProvider from './context/NavigationContext';
 import { CustomerModalProvider } from './context/CustomerModalContext';
+import { LoadingProvider } from './context/LoadingContext'; 
 import PrivateRoute from './authentication/PrivateRoute';
 import './index.css';
 
@@ -17,17 +18,19 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <AuthProvider>
         <NavigationProvider>
           <CustomerModalProvider>
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route
-                path="/*"
-                element={
-                  <PrivateRoute>
-                    <App />
-                  </PrivateRoute>
-                }
-              />
-            </Routes>
+            <LoadingProvider>
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route
+                  path="/*"
+                  element={
+                    <PrivateRoute>
+                      <App />
+                    </PrivateRoute>
+                  }
+                />
+              </Routes>
+            </LoadingProvider>
           </CustomerModalProvider>
         </NavigationProvider>
       </AuthProvider>

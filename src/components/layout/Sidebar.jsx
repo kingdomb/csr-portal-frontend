@@ -12,7 +12,7 @@ import {
   FaSignOutAlt,
 } from 'react-icons/fa';
 
-import { useNavigation } from '../../context/useNavigation';
+import { useNavigation } from '../../hooks/useNavigation.js';
 import { useCustomerModals } from '../../context/CustomerModalContext';
 import SidebarBranding from './SidebarBranding';
 import SubMenuList from './SubMenuList';
