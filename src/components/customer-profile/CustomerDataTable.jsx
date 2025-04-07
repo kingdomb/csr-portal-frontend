@@ -1,4 +1,3 @@
-// CustomerDataTable.jsx
 import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
 
 export default function CustomerDataTable({
@@ -21,7 +20,7 @@ export default function CustomerDataTable({
     if (col.toLowerCase().includes('date') && formatDate) return formatDate(value);
     if (col === 'Status' && statusColors) {
       const colorClass = statusColors[value?.toLowerCase()] || '';
-      return <span className={`px-2 py-1 rounded text-xs ${colorClass}`}>{value}</span>;
+      return <span className={`px-2 py-1 rounded-full text-xs ${colorClass}`}>{value}</span>;
     }
 
     return value;
@@ -66,6 +65,7 @@ export default function CustomerDataTable({
                 key={i}
                 className="hover:bg-[#1e293b] cursor-pointer transition-colors"
                 onClick={() => onRowClick(row)}
+                title="Click to edit"
               >
                 {columns.map((col) => (
                   <td key={col} className={`px-4 py-3 ${renderClass(col)}`}>

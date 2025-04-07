@@ -12,7 +12,6 @@ export default function CustomerPagination({
   if (totalPages <= 1) return null;
 
   const getVisiblePages = () => {
-    const pages = [];
 
     if (totalPages <= 5) return Array.from({ length: totalPages }, (_, i) => i + 1);
     if (currentPage <= 3) return [1, 2, 3, '...', totalPages];

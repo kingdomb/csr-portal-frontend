@@ -170,7 +170,7 @@ const Sidebar = () => {
               isFooterVisible ? 'opacity-100' : 'opacity-0'
             }`}
           >
-            © 2025 AMP Holdings Limited.
+            © 2025 xyz Holdings Limited.
           </div>
         )}
       </div>

@@ -37,10 +37,18 @@ export default function EditCustomerModal({
       onClose={close}
       footer={
         <div className="flex justify-end gap-3">
-          <button onClick={close} type="button" className="btn-outline">
+          <button
+            onClick={close}
+            type="button"
+            className="rounded-xl border border-gray-500 px-4 py-2 text-sm text-gray-300 hover:border-gray-400 hover:text-white transition-colors"
+          >
             Cancel
           </button>
-          <button type="submit" form="editCustomerForm" className="btn-primary">
+          <button
+            type="submit"
+            form="editCustomerForm"
+            className="rounded-xl bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-500 transition-colors"
+          >
             Save Changes
           </button>
         </div>

@@ -12,7 +12,8 @@ export default function CustomerTable({
     return (
       <div className="flex justify-center items-center p-12">
         <svg
-          className="animate-spin h-8 w-8 text-blue-400"
+          style={{ animation: 'spin 1s linear infinite' }}
+          className="h-8 w-8 text-blue-400"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -24,12 +25,12 @@ export default function CustomerTable({
             r="10"
             stroke="currentColor"
             strokeWidth="4"
-          ></circle>
+          />
           <path
             className="opacity-75"
             fill="currentColor"
             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-          ></path>
+          />
         </svg>
       </div>
     );
@@ -94,7 +95,7 @@ export default function CustomerTable({
                   {customer['Phone']}
                 </td>
                 <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap">
-                  <span className={`px-2 py-1 rounded text-xs font-medium ${statusClass}`}>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusClass}`}>
                     {status}
                   </span>
                 </td>
