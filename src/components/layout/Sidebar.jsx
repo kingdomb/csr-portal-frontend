@@ -14,6 +14,7 @@ import {
 
 import { useNavigation } from '../../hooks/useNavigation.js';
 import { useCustomerModals } from '../../context/CustomerModalContext';
+import { useCustomer } from '../../hooks/useCustomer';
 import SidebarBranding from './SidebarBranding';
 import SubMenuList from './SubMenuList';
 import useAuth from '../../authentication/useAuth';
@@ -21,7 +22,8 @@ import useAuth from '../../authentication/useAuth';
 const Sidebar = () => {
   const navigate = useNavigate();
   const { logout } = useAuth();
-  const { selectedCustomer, activeNavItem, setActiveNavItem } = useNavigation();
+  const { activeNavItem, setActiveNavItem } = useNavigation();
+  const { selectedCustomer } = useCustomer();
 
   const {
     setShowEditModal,
@@ -101,6 +103,7 @@ const Sidebar = () => {
   const handleMainNavClick = (itemName, path) => {
     setActiveNavItem(itemName);
     navigate(path);
+
     if (
       !isLargeScreen &&
       (itemName !== 'CUSTOMER PROFILE' || customerProfileSubItems.every((sub) => sub.disabled))
@@ -153,7 +156,6 @@ const Sidebar = () => {
           </ul>
         </nav>
 
-        {/* Logout button below 448px only */}
         <div className="xl:hidden absolute bottom-12 left-0 w-full flex justify-center">
           <button
             onClick={logout}

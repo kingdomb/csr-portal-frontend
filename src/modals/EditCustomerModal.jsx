@@ -7,7 +7,7 @@ import InputField from '../components/common/InputField';
 
 export default function EditCustomerModal({
   selectedCustomer,
-  setSelectedCustomer, // optional
+  setSelectedCustomer, 
   customers,
   setCustomers,
   setShowEditModal,
@@ -50,7 +50,7 @@ export default function EditCustomerModal({
 
     const updated = customers.map((c) => (c['Cust. Id'] === trimmed['Cust. Id'] ? trimmed : c));
     setCustomers(updated);
-    if (setSelectedCustomer) setSelectedCustomer(trimmed); // guard optional
+    if (setSelectedCustomer) setSelectedCustomer(trimmed); 
     close();
   };
 

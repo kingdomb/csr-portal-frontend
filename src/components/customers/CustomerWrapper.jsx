@@ -7,9 +7,12 @@ import Card from '../common/Card';
 import CustomerSearch from './CustomerSearch';
 import CustomerTable from './CustomerTable';
 import CustomerPagination from './CustomerPagination';
+import { useCustomer } from '../../hooks/useCustomer';
 
-export default function CustomerWrapper({ setActiveNavItem, setSelectedCustomer }) {
+export default function CustomerWrapper({ setActiveNavItem }) {
   const navigate = useNavigate();
+  const { setSelectedCustomer } = useCustomer();
+
   const [allCustomers] = useState(registeredUsers);
   const [customers, setCustomers] = useState(registeredUsers);
   const [searchQuery, setSearchQuery] = useState('');
@@ -24,7 +27,7 @@ export default function CustomerWrapper({ setActiveNavItem, setSelectedCustomer 
   const totalPages = Math.ceil(customers.length / customersPerPage);
 
   const handleCustomerClick = (customer) => {
-    setSelectedCustomer(customer);
+    setSelectedCustomer(customer); 
     setActiveNavItem('CUSTOMER PROFILE');
     navigate('/customer-profile');
   };

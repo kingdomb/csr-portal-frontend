@@ -1,9 +1,8 @@
 // CustomerProfileWrapper.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { registeredUserTxns } from '../../data/registeredUserTxns.js';
-import { vehicleSubscriptions } from '../../data/vehicleSubscriptions.js';
 import EditTransactionModal from '../../modals/EditTransactionModal';
 import EditVehicleSubscriptionModal from '../../modals/EditVehicleSubscriptionModal';
 import EditCustomerModal from '../../modals/EditCustomerModal';
@@ -12,9 +11,15 @@ import CustomerDetailsCard from './CustomerDetailsCard';
 import CustomerDataTable from './CustomerDataTable';
 import Card from '../common/Card';
 import { useCustomerModals } from '../../context/CustomerModalContext';
+import { useCustomer } from '../../hooks/useCustomer';
+import { useCustomerTransactions } from '../../hooks/useCustomerTransactions';
+import { useCustomerSubscriptions } from '../../hooks/useCustomerSubscriptions';
 
-export default function CustomerProfileWrapper({ selectedCustomer, setSelectedCustomer }) {
+export default function CustomerProfileWrapper() {
   const navigate = useNavigate();
+  const { selectedCustomer, setSelectedCustomer } = useCustomer();
+  const { customerTransactions, setCustomerTransactions } = useCustomerTransactions();
+  const { customerSubscriptions } = useCustomerSubscriptions(); 
 
   const {
     showEditModal,
@@ -29,6 +34,16 @@ export default function CustomerProfileWrapper({ selectedCustomer, setSelectedCu
     setSelectedSubscription,
   } = useCustomerModals();
 
+  const [txnSort, setTxnSort] = useState({ key: null, direction: 'asc' });
+  const [subSort, setSubSort] = useState({ key: null, direction: 'asc' });
+
+  const [txnPage, setTxnPage] = useState(1);
+  const [subPage, setSubPage] = useState(1);
+
+  const customerSubs = customerSubscriptions.filter(
+    (s) => s['Cust. Id'] === selectedCustomer?.['Cust. Id']
+  );
+
   const statusColors = {
     open: 'bg-blue-500 text-white',
     pending: 'bg-yellow-500 text-white',
@@ -38,25 +53,6 @@ export default function CustomerProfileWrapper({ selectedCustomer, setSelectedCu
     expired: 'bg-gray-500 text-white',
     cancelled: 'bg-red-500 text-white',
   };
-
-  const [txnSort, setTxnSort] = useState({ key: null, direction: 'asc' });
-  const [subSort, setSubSort] = useState({ key: null, direction: 'asc' });
-
-  const [txnPage, setTxnPage] = useState(1);
-  const [subPage, setSubPage] = useState(1);
-
-  const handleBack = () => {
-    navigate('/customers');
-  };
-
-  const formatDate = (dateStr) =>
-    new Date(dateStr).toLocaleDateString(undefined, {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
 
   const paginate = (items, currentPage, perPage) => {
     const start = (currentPage - 1) * perPage;
@@ -78,19 +74,16 @@ export default function CustomerProfileWrapper({ selectedCustomer, setSelectedCu
     );
   };
 
-  const customerTxns = registeredUserTxns.filter(
-    (t) => t['Cust. Id'] === selectedCustomer?.['Cust. Id']
-  );
-
-  const customerSubs = vehicleSubscriptions.filter(
-    (s) => s['Cust. Id'] === selectedCustomer?.['Cust. Id']
-  );
-
-  const customers = [selectedCustomer];
+  useEffect(() => {
+    if (selectedCustomer) {
+      const txns = registeredUserTxns.filter((t) => t['Cust. Id'] === selectedCustomer['Cust. Id']);
+      setCustomerTransactions(txns);
+    }
+  }, [selectedCustomer, setCustomerTransactions]);
 
   return (
     <div className="p-6">
-      <CustomerHeader onBack={handleBack} />
+      <CustomerHeader onBack={() => navigate('/customers')} />
 
       {selectedCustomer ? (
         <>
@@ -99,9 +92,10 @@ export default function CustomerProfileWrapper({ selectedCustomer, setSelectedCu
           <CustomerDataTable
             title="Customer Transactions"
             columns={['Transaction ID', 'Transaction Date', 'Amount', 'Payment Method', 'Status']}
-            data={paginate(sortData(customerTxns, txnSort), txnPage, 5)}
+            data={paginate(sortData(customerTransactions, txnSort), txnPage, 5)}
             currentPage={txnPage}
-            totalItems={customerTxns.length}
+            setCurrentPage={setTxnPage}
+            totalItems={customerTransactions.length}
             onSort={(key) =>
               setTxnSort((prev) => ({
                 key,
@@ -109,12 +103,11 @@ export default function CustomerProfileWrapper({ selectedCustomer, setSelectedCu
               }))
             }
             sortConfig={txnSort}
-            formatDate={formatDate}
-            statusColors={statusColors}
             onRowClick={(txn) => {
               setSelectedTransaction(txn);
               setShowEditTransactionModal(true);
             }}
+            statusColors={statusColors}
           />
 
           <CustomerDataTable
@@ -132,11 +125,11 @@ export default function CustomerProfileWrapper({ selectedCustomer, setSelectedCu
             }
             sortConfig={subSort}
             type="subscriptions"
-            statusColors={statusColors}
             onRowClick={(sub) => {
               setSelectedSubscription(sub);
               setShowEditVehicleSubscriptionModal(true);
             }}
+            statusColors={statusColors}
           />
         </>
       ) : (
@@ -149,7 +142,7 @@ export default function CustomerProfileWrapper({ selectedCustomer, setSelectedCu
         <EditCustomerModal
           selectedCustomer={selectedCustomer}
           setSelectedCustomer={setSelectedCustomer}
-          customers={customers}
+          customers={[selectedCustomer]}
           setCustomers={() => {}}
           setShowEditModal={setShowEditModal}
         />
@@ -160,8 +153,6 @@ export default function CustomerProfileWrapper({ selectedCustomer, setSelectedCu
           selectedTransaction={selectedTransaction}
           setSelectedTransaction={setSelectedTransaction}
           setShowEditModal={setShowEditTransactionModal}
-          registeredUserTxns={customerTxns}
-          setTransactions={() => {}}
         />
       )}
 
@@ -170,8 +161,6 @@ export default function CustomerProfileWrapper({ selectedCustomer, setSelectedCu
           selectedSubscription={selectedSubscription}
           setSelectedSubscription={setSelectedSubscription}
           setShowEditModal={setShowEditVehicleSubscriptionModal}
-          vehicleSubscriptions={customerSubs}
-          setVehicleSubscriptions={() => {}}
         />
       )}
     </div>

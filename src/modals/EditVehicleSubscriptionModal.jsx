@@ -1,5 +1,7 @@
 // EditVehicleSubscriptionModal.jsx
 import { useState } from 'react';
+
+import { useCustomerSubscriptions } from '../hooks/useCustomerSubscriptions';
 import ModalCard from '../components/common/ModalCard';
 import SelectField from '../components/common/SelectField';
 import InputField from '../components/common/InputField';
@@ -7,10 +9,9 @@ import InputField from '../components/common/InputField';
 export default function EditVehicleSubscriptionModal({
   selectedSubscription,
   setSelectedSubscription,
-  vehicleSubscriptions = [],
-  setVehicleSubscriptions,
   setShowEditModal,
 }) {
+  const { customerSubscriptions, setCustomerSubscriptions } = useCustomerSubscriptions();
   const isNew = !selectedSubscription;
 
   const [edited, setEdited] = useState(
@@ -64,12 +65,12 @@ export default function EditVehicleSubscriptionModal({
     if (!validateFields()) return;
 
     if (isNew) {
-      setVehicleSubscriptions([...vehicleSubscriptions, trimmed]);
+      setCustomerSubscriptions([...customerSubscriptions, trimmed]);
     } else {
-      const updated = vehicleSubscriptions.map((sub) =>
+      const updated = customerSubscriptions.map((sub) =>
         sub['Subscription ID'] === trimmed['Subscription ID'] ? trimmed : sub
       );
-      setVehicleSubscriptions(updated);
+      setCustomerSubscriptions(updated);
     }
     setSelectedSubscription(trimmed);
     close();
@@ -130,7 +131,6 @@ export default function EditVehicleSubscriptionModal({
           name="Make"
           value={edited['Make']}
           onChange={handleChange}
-          placeholder="e.g. Toyota"
           error={errors['Make']}
         />
         <InputField
@@ -138,7 +138,6 @@ export default function EditVehicleSubscriptionModal({
           name="Model"
           value={edited['Model']}
           onChange={handleChange}
-          placeholder="e.g. Camry"
           error={errors['Model']}
         />
         <InputField
@@ -146,7 +145,6 @@ export default function EditVehicleSubscriptionModal({
           name="Year"
           value={edited['Year']}
           onChange={handleChange}
-          placeholder="e.g. 2022"
           error={errors['Year']}
         />
         <InputField
@@ -154,7 +152,6 @@ export default function EditVehicleSubscriptionModal({
           name="License Plate"
           value={edited['License Plate']}
           onChange={handleChange}
-          placeholder="e.g. ABC-1234"
           error={errors['License Plate']}
         />
         <SelectField
