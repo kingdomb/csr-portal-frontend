@@ -34,7 +34,7 @@ export default function CustomerWrapper({
   };
 
   return (
-    <div className="p-6 bg-[#1E293B] min-h-screen text-white">
+    <div className="p-6 bg-[#1E293B] text-white">
       <Card className="mb-8">
         <CustomerSearch
           loading={loading}

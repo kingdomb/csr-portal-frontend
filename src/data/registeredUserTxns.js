@@ -7,7 +7,7 @@ export const registeredUserTxns = [
     Amount: 47.99,
     'Payment Method': 'Bank Transfer',
     'Transaction Type': 'Upgrade',
-    Status: 'Completed',
+    Status: 'Pending',
   },
   {
     'Transaction ID': 'TXN-2002',
@@ -47,7 +47,7 @@ export const registeredUserTxns = [
     Amount: 33.99,
     'Payment Method': 'Credit Card',
     'Transaction Type': 'Downgrade',
-    Status: 'Completed',
+    Status: 'Pending',
   },
   {
     'Transaction ID': 'TXN-2006',
@@ -147,7 +147,7 @@ export const registeredUserTxns = [
     Amount: 39.99,
     'Payment Method': 'Bank Transfer',
     'Transaction Type': 'Upgrade',
-    Status: 'Completed',
+    Status: 'Pending',
   },
   {
     'Transaction ID': 'TXN-2016',
@@ -257,7 +257,7 @@ export const registeredUserTxns = [
     Amount: 33.99,
     'Payment Method': 'Debit Card',
     'Transaction Type': 'Upgrade',
-    Status: 'Completed',
+    Status: 'Pending',
   },
   {
     'Transaction ID': 'TXN-2027',
@@ -347,7 +347,7 @@ export const registeredUserTxns = [
     Amount: 19.99,
     'Payment Method': 'Bank Transfer',
     'Transaction Type': 'Activation',
-    Status: 'Completed',
+    Status: 'Pending',
   },
   {
     'Transaction ID': 'TXN-2036',
@@ -427,7 +427,7 @@ export const registeredUserTxns = [
     Amount: 39.99,
     'Payment Method': 'Bank Transfer',
     'Transaction Type': 'Activation',
-    Status: 'Completed',
+    Status: 'Pending',
   },
   {
     'Transaction ID': 'TXN-2044',
@@ -467,7 +467,7 @@ export const registeredUserTxns = [
     Amount: 33.99,
     'Payment Method': 'Debit Card',
     'Transaction Type': 'Activation',
-    Status: 'Completed',
+    Status: 'Pending',
   },
   {
     'Transaction ID': 'TXN-2048',
@@ -477,7 +477,7 @@ export const registeredUserTxns = [
     Amount: 19.99,
     'Payment Method': 'Debit Card',
     'Transaction Type': 'Downgrade',
-    Status: 'Completed',
+    Status: 'Pending',
   },
   {
     'Transaction ID': 'TXN-2049',
@@ -487,7 +487,7 @@ export const registeredUserTxns = [
     Amount: 33.99,
     'Payment Method': 'Bank Transfer',
     'Transaction Type': 'Reactivation',
-    Status: 'Completed',
+    Status: 'Pending',
   },
   {
     'Transaction ID': 'TXN-2050',
@@ -557,7 +557,7 @@ export const registeredUserTxns = [
     Amount: 33.99,
     'Payment Method': 'Credit Card',
     'Transaction Type': 'Activation',
-    Status: 'Completed',
+    Status: 'Pending',
   },
   {
     'Transaction ID': 'TXN-2057',
@@ -577,7 +577,7 @@ export const registeredUserTxns = [
     Amount: 39.99,
     'Payment Method': 'Credit Card',
     'Transaction Type': 'Reactivation',
-    Status: 'Completed',
+    Status: 'Pending',
   },
   {
     'Transaction ID': 'TXN-2059',
@@ -587,7 +587,7 @@ export const registeredUserTxns = [
     Amount: 47.99,
     'Payment Method': 'Bank Transfer',
     'Transaction Type': 'Upgrade',
-    Status: 'Completed',
+    Status: 'Pending',
   },
   {
     'Transaction ID': 'TXN-2060',
@@ -597,7 +597,7 @@ export const registeredUserTxns = [
     Amount: 19.99,
     'Payment Method': 'Credit Card',
     'Transaction Type': 'Upgrade',
-    Status: 'Completed',
+    Status: 'Pending',
   },
   {
     'Transaction ID': 'TXN-2061',
@@ -607,7 +607,7 @@ export const registeredUserTxns = [
     Amount: 19.99,
     'Payment Method': 'Debit Card',
     'Transaction Type': 'Activation',
-    Status: 'Completed',
+    Status: 'Pending',
   },
   {
     'Transaction ID': 'TXN-2062',
@@ -627,7 +627,7 @@ export const registeredUserTxns = [
     Amount: 47.99,
     'Payment Method': 'Bank Transfer',
     'Transaction Type': 'Activation',
-    Status: 'Completed',
+    Status: 'Pending',
   },
   {
     'Transaction ID': 'TXN-2064',
@@ -637,7 +637,7 @@ export const registeredUserTxns = [
     Amount: 33.99,
     'Payment Method': 'Bank Transfer',
     'Transaction Type': 'Reactivation',
-    Status: 'Completed',
+    Status: 'Pending',
   },
   {
     'Transaction ID': 'TXN-2065',
@@ -777,7 +777,7 @@ export const registeredUserTxns = [
     Amount: 19.99,
     'Payment Method': 'Bank Transfer',
     'Transaction Type': 'Downgrade',
-    Status: 'Completed',
+    Status: 'Pending',
   },
   {
     'Transaction ID': 'TXN-2079',
@@ -797,7 +797,7 @@ export const registeredUserTxns = [
     Amount: 19.99,
     'Payment Method': 'Bank Transfer',
     'Transaction Type': 'Downgrade',
-    Status: 'Completed',
+    Status: 'Pending',
   },
   {
     'Transaction ID': 'TXN-2081',
@@ -817,7 +817,7 @@ export const registeredUserTxns = [
     Amount: 27.99,
     'Payment Method': 'Debit Card',
     'Transaction Type': 'Reactivation',
-    Status: 'Completed',
+    Status: 'Pending',
   },
   {
     'Transaction ID': 'TXN-2083',
@@ -907,7 +907,7 @@ export const registeredUserTxns = [
     Amount: 27.99,
     'Payment Method': 'Credit Card',
     'Transaction Type': 'Upgrade',
-    Status: 'Completed',
+    Status: 'Pending',
   },
   {
     'Transaction ID': 'TXN-2092',

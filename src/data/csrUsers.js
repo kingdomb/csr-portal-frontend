@@ -15,8 +15,6 @@ export const csrUsers = [
 ];
 
 export const authenticateUser = (username, password) => {
-  const user = csrUsers.find(
-    (u) => u.username === username && u.password === password
-  );
+  const user = csrUsers.find((u) => u.username === username && u.password === password);
   return user || null;
 };

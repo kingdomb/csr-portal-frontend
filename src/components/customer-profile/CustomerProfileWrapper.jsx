@@ -34,6 +34,9 @@ export default function CustomerProfileWrapper({ selectedCustomer, setSelectedCu
     pending: 'bg-yellow-500 text-white',
     completed: 'bg-green-500 text-white',
     escalated: 'bg-red-500 text-white',
+    active: 'bg-green-500 text-white',
+    expired: 'bg-gray-500 text-white',
+    cancelled: 'bg-red-500 text-white',
   };
 
   const [txnSort, setTxnSort] = useState({ key: null, direction: 'asc' });
@@ -98,7 +101,6 @@ export default function CustomerProfileWrapper({ selectedCustomer, setSelectedCu
             columns={['Transaction ID', 'Transaction Date', 'Amount', 'Payment Method', 'Status']}
             data={paginate(sortData(customerTxns, txnSort), txnPage, 5)}
             currentPage={txnPage}
-            setCurrentPage={setTxnPage}
             totalItems={customerTxns.length}
             onSort={(key) =>
               setTxnSort((prev) => ({
@@ -107,7 +109,6 @@ export default function CustomerProfileWrapper({ selectedCustomer, setSelectedCu
               }))
             }
             sortConfig={txnSort}
-            type="registeredUserTxns"
             formatDate={formatDate}
             statusColors={statusColors}
             onRowClick={(txn) => {

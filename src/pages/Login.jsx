@@ -21,7 +21,7 @@ const Login = () => {
     const user = authenticateUser(username, password);
 
     if (!user) {
-      setError('Invalid username or password');
+      setError('Invalid username or password please contact your site admin.');
     } else {
       login(user);
       navigate('/');
@@ -39,7 +39,7 @@ const Login = () => {
           <h2 className="text-xl font-semibold">CSR Portal Login</h2>
         </div>
 
-        {error && <p className="text-red-400 text-sm">{error}</p>}
+        {error && <p className="text-red-400 text-sm text-center">{error}</p>}
 
         <div className="space-y-4">
           <input
