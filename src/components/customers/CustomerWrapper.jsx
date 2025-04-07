@@ -61,6 +61,13 @@ export default function CustomerWrapper({ setActiveNavItem, setSelectedCustomer 
             setCustomers(sorted);
           }}
           handleCustomerClick={handleCustomerClick}
+          searchedCustomers={searchedCustomers}
+          resetSearch={() => {
+            setSearchQuery('');
+            setCustomers(allCustomers);
+            setSearchedCustomers(false);
+            setCurrentPage(1);
+          }}
         />
       </Card>
 
