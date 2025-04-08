@@ -21,32 +21,25 @@ export default function CustomerDetailsCard({ customer }) {
             : 'text-white';
 
       return (
-        <div
-          key={key}
-          className="flex flex-col 2xs:flex-row gap-1 2xs:gap-2 items-start break-words"
-        >
-          <p className="font-semibold text-white w-full 2xs:w-24 sm:w-28 lg:w-32 text-[10px] 2xs:text-xs sm:text-sm lg:text-base">
+        <div key={key} className="flex flex-col lg:flex-row gap-1 lg:gap-2 items-start break-words">
+          <p className="font-semibold text-white w-full lg:w-28 4xl:w-36 text-[11px] lg:text-sm">
             {key}:
           </p>
-          <p className={`${statusClass} flex-1 text-[10px] 2xs:text-xs sm:text-sm lg:text-base`}>
-            {value}
-          </p>
+          <p className={`${statusClass} flex-1 text-[11px] lg:text-sm`}>{value}</p>
         </div>
       );
     });
 
   return (
-    <Card className="mb-4 sm:mb-6">
-      <div className="mb-3 sm:mb-4">
-        <h3 className="text-sm 2xs:text-base sm:text-lg xl:text-xl font-medium text-white">
-          Customer Details
-        </h3>
+    <Card className="mb-4 lg:mb-6">
+      <div className="mb-3 lg:mb-4">
+        <h3 className="text-base lg:text-lg 4xl:text-xl font-medium text-white">Customer Details</h3>
       </div>
-      <div className="flex flex-col 4xl:flex-row gap-3 sm:gap-4 lg:gap-6 4xl:gap-10">
-        <div className="flex-1 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-700 rounded-md bg-[#1E293B] space-y-2">
+      <div className="flex flex-col 4xl:flex-row gap-4 4xl:gap-10">
+        <div className="flex-1 px-3 lg:px-4 py-3 border border-gray-700 rounded-md bg-[#1E293B] space-y-2">
           {renderFields(left)}
         </div>
-        <div className="flex-1 px-2 sm:px-3 lg:px-4 py-2 sm:py-3 border border-gray-700 rounded-md bg-[#1E293B] space-y-2">
+        <div className="flex-1 px-3 lg:px-4 py-3 border border-gray-700 rounded-md bg-[#1E293B] space-y-2">
           {renderFields(right)}
         </div>
       </div>

@@ -28,7 +28,7 @@ export default function CustomerDataTable({
 
   const renderClass = (col) => {
     if (col === 'Transaction ID' || col === 'Subscription ID' || col === 'Status') return '';
-    return 'hidden 5xl:table-cell';
+    return 'hidden 54xl:table-cell';
   };
 
   const handlePrev = () => setCurrentPage?.((prev) => Math.max(prev - 1, 1));
@@ -39,16 +39,16 @@ export default function CustomerDataTable({
 
   return (
     <div className="mt-6">
-      <h2 className="text-lg font-semibold text-white mb-4">{title}</h2>
+      <h2 className="text-base lg:text-lg font-semibold text-white mb-4">{title}</h2>
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-700 text-white text-sm">
+        <table className="min-w-full divide-y divide-gray-700 text-white text-xs lg:text-sm">
           <thead className="bg-[#1E293B]">
             <tr>
               {columns.map((col) => (
                 <th
                   key={col}
                   onClick={() => onSort(col)}
-                  className={`px-4 py-3 text-left font-medium uppercase tracking-wide cursor-pointer hover:bg-[#334155] ${renderClass(
+                  className={`px-3 lg:px-4 py-3 text-left font-medium uppercase tracking-wide cursor-pointer hover:bg-[#334155] ${renderClass(
                     col
                   )}`}
                 >
@@ -74,7 +74,7 @@ export default function CustomerDataTable({
                 title="Click to edit"
               >
                 {columns.map((col) => (
-                  <td key={col} className={`px-4 py-3 ${renderClass(col)}`}>
+                  <td key={col} className={`px-3 lg:px-4 py-3 ${renderClass(col)}`}>
                     {getCellContent(row, col)}
                   </td>
                 ))}
@@ -84,7 +84,7 @@ export default function CustomerDataTable({
         </table>
       </div>
 
-      <div className="mt-3 flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs text-gray-400 gap-2">
+      <div className="mt-3 flex flex-col lg:flex-row lg:items-center lg:justify-between text-xs text-gray-400 gap-2">
         <div>
           Showing {Math.min((currentPage - 1) * 5 + 1, totalItems)}–
           {Math.min(currentPage * 5, totalItems)} of {totalItems}
