@@ -71,8 +71,9 @@ export default function CustomerTable({
               return (
                 <tr
                   key={i}
-                  className="hover:bg-[#1e293b] cursor-pointer transition-colors duration-150"
+                  className="hover:bg-[#1e293b] cursor-pointer transition-colors"
                   onClick={() => handleCustomerClick(customer)}
+                  title="Click to view"
                 >
                   <td className="px-3 md:px-6 py-3 md:py-4 whitespace-nowrap">
                     {customer['Name']}
