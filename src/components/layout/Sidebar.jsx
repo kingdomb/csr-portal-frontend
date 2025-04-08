@@ -33,12 +33,19 @@ const Sidebar = () => {
     setSelectedSubscription,
   } = useCustomerModals();
 
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 1280;
+    }
+    return false;
+  });
+
   const [isCollapsedUI, setIsCollapsedUI] = useState(false);
   const [isFooterVisible, setIsFooterVisible] = useState(false);
   const [isLargeScreen, setIsLargeScreen] = useState(false);
   const [manuallyToggled, setManuallyToggled] = useState(false);
   const timeoutRef = useRef(null);
+  const sidebarRef = useRef(null);
 
   const BREAKPOINT = 1280;
 
@@ -75,6 +82,15 @@ const Sidebar = () => {
   ];
 
   useEffect(() => {
+    const handleToggle = () => {
+      setIsCollapsed((prev) => !prev);
+      setManuallyToggled(true);
+    };
+    document.addEventListener('toggle-sidebar', handleToggle);
+    return () => document.removeEventListener('toggle-sidebar', handleToggle);
+  }, []);
+
+  useEffect(() => {
     const handleResize = () => {
       const screenIsLarge = window.innerWidth >= BREAKPOINT;
       if (screenIsLarge !== isLargeScreen && !manuallyToggled) {
@@ -100,6 +116,18 @@ const Sidebar = () => {
     return () => timeoutRef.current && clearTimeout(timeoutRef.current);
   }, [isCollapsed]);
 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!isLargeScreen && sidebarRef.current && !sidebarRef.current.contains(e.target)) {
+        setIsCollapsed(true);
+        setManuallyToggled(true);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isLargeScreen]);
+
   const handleMainNavClick = (itemName, path) => {
     setActiveNavItem(itemName);
     navigate(path);
@@ -116,9 +144,10 @@ const Sidebar = () => {
   return (
     <div className="flex">
       <div
-        className={`bg-[#1E293B] border-r border-gray-700 h-screen transition-all duration-300 relative ${
-          isCollapsedUI ? 'w-16' : 'w-64'
-        } shrink-0`}
+        ref={sidebarRef}
+        className={`bg-[#1E293B] border-r border-gray-700 h-screen transition-all duration-300 fixed xl:relative top-0 left-0 z-50
+          ${isCollapsedUI ? 'w-16 -translate-x-full xl:translate-x-0' : 'w-64 translate-x-0'}
+          transform xl:transform-none ease-in-out`}
       >
         <div className="bg-[#0F172A] px-4 py-5 text-white flex items-center justify-between min-h-16">
           <SidebarBranding isCollapsedUI={isCollapsedUI} />
