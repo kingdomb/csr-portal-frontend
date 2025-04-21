@@ -1,6 +1,9 @@
 // CustomerDataTable.jsx
 import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
 
+import { getCellData } from '../../utils/tableCellData';
+import { getColumnClass } from '../../utils/tableColumnClass';
+
 export default function CustomerDataTable({
   title,
   columns,
@@ -15,21 +18,6 @@ export default function CustomerDataTable({
   setCurrentPage,
 }) {
   if (!data || data.length === 0) return null;
-
-  const getCellContent = (row, col) => {
-    const value = row[col];
-    if (col.toLowerCase().includes('date') && formatDate) return formatDate(value);
-    if (col === 'Status' && statusColors) {
-      const colorClass = statusColors[value?.toLowerCase()] || '';
-      return <span className={`px-2 py-1 rounded-full text-xs ${colorClass}`}>{value}</span>;
-    }
-    return value;
-  };
-
-  const renderClass = (col) => {
-    if (col === 'Transaction ID' || col === 'Subscription ID' || col === 'Status') return '';
-    return 'hidden 54xl:table-cell';
-  };
 
   const handlePrev = () => setCurrentPage?.((prev) => Math.max(prev - 1, 1));
   const handleNext = () => {
@@ -48,7 +36,7 @@ export default function CustomerDataTable({
                 <th
                   key={col}
                   onClick={() => onSort(col)}
-                  className={`px-3 lg:px-4 py-3 text-left font-medium uppercase tracking-wide cursor-pointer hover:bg-[#334155] ${renderClass(
+                  className={`px-3 lg:px-4 py-3 text-left font-medium uppercase tracking-wide cursor-pointer hover:bg-[#334155] ${getColumnClass(
                     col
                   )}`}
                 >
@@ -73,11 +61,20 @@ export default function CustomerDataTable({
                 onClick={() => onRowClick(row)}
                 title="Click to edit"
               >
-                {columns.map((col) => (
-                  <td key={col} className={`px-3 lg:px-4 py-3 ${renderClass(col)}`}>
-                    {getCellContent(row, col)}
-                  </td>
-                ))}
+                {columns.map((col) => {
+                  const cell = getCellData(row, col, formatDate, statusColors);
+                  return (
+                    <td key={col} className={`px-3 lg:px-4 py-3 ${getColumnClass(col)}`}>
+                      {col === 'Status' && typeof cell === 'object' ? (
+                        <span className={`px-2 py-1 rounded-full text-xs ${cell.colorClass}`}>
+                          {cell.value}
+                        </span>
+                      ) : (
+                        cell
+                      )}
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tbody>

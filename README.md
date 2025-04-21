@@ -1,5 +1,7 @@
 # 🚗 Customer Management Dashboard
 
+![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
+
 A React-based internal tool for Customer Service Representatives (CSRs) to manage users, accounts, and subscriptions within the mobile vehicle services platform.
 ## 🔐 Login Credentials
 
