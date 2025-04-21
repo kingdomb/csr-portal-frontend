@@ -51,11 +51,12 @@ export default [
     languageOptions: {
       globals: {
         ...globals.jest,
+        ...globals.node,
       },
     },
   },
   {
-    files: ['babel.config.js'], 
+    files: ['babel.config.js'],
     languageOptions: {
       globals: {
         ...globals.node,
