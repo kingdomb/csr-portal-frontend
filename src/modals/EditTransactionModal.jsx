@@ -6,6 +6,9 @@ import InputField from '../components/common/InputField';
 import SelectField from '../components/common/SelectField';
 import { useCustomerTransactions } from '../hooks/useCustomerTransactions';
 
+import { validateCustomerFields } from '../utils/validation';
+import { trimObjectValues } from '../utils/formatters';
+
 export default function EditTransactionModal({
   selectedTransaction,
   setSelectedTransaction,
@@ -32,25 +35,6 @@ export default function EditTransactionModal({
     setEdited((prev) => ({ ...prev, [name]: value }));
   };
 
-  const validateFields = () => {
-    const requiredFields = [
-      'Transaction ID',
-      'Cust. Id',
-      'Transaction Date',
-      'Amount',
-      'Payment Method',
-      'Status',
-    ];
-    const newErrors = {};
-    for (const field of requiredFields) {
-      if (!edited[field]?.toString().trim()) {
-        newErrors[field] = 'Required';
-      }
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const close = () => {
     setShowEditModal(false);
     setSelectedTransaction(null);
@@ -59,12 +43,20 @@ export default function EditTransactionModal({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const trimmed = Object.fromEntries(
-      Object.entries(edited).map(([k, v]) => [k, v?.toString().trim()])
-    );
+    const trimmed = trimObjectValues(edited);
     setEdited(trimmed);
 
-    if (!validateFields()) return;
+    const requiredFields = Object.keys(trimmed);
+    const isValid = validateCustomerFields(trimmed, requiredFields);
+
+    if (!isValid) {
+      setErrors(
+        Object.fromEntries(
+          requiredFields.map((field) => [field, !trimmed[field] ? 'Required' : ''])
+        )
+      );
+      return;
+    }
 
     if (isNew) {
       setCustomerTransactions([...customerTransactions, trimmed]);

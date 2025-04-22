@@ -22,3 +22,17 @@ Delete app.css and logos in ./src/assets & ./public/ & Delete import statements 
 
 commit 1
 feature/bm-collapsible-sidebar
+
+
+//suggestions for files structure 
+src/
+├── services/
+│   ├── authService.js         # LocalStorage helpers
+│   └── customerService.js     # Data formatting logic
+├── utils/
+│   ├── dateFormatter.js       # formatDate
+│   └── getStatusClass.js      # statusClasses
+├── hooks/
+│   └── useSplitFields.js      # logic from CustomerDetailsCard
+├── constants/
+│   └── statusMap.js           # { active: 'green', expired: 'red' }
