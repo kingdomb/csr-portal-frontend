@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 
 import { authenticateUser } from '../data/csrUsers';
 import useAuth from '../authentication/useAuth';
-import logo from '../assets/amp-logo.svg';
+import logo from '../assets/autowash_logo.webp';
 
 const Login = () => {
   const usernameRef = useRef();
