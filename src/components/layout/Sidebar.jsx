@@ -195,7 +195,7 @@ const Sidebar = ({ forceCollapse = false }) => {
               isFooterVisible ? 'opacity-100' : 'opacity-0'
             }`}
           >
-            © 2025 amp Holdings Limited.
+            © 2025 B. Major Portfolio
           </div>
         )}
       </div>
