@@ -4,10 +4,13 @@ import { useState } from 'react';
 import ModalCard from '../components/common/ModalCard';
 import SelectField from '../components/common/SelectField';
 import InputField from '../components/common/InputField';
+import { validateCustomerFields } from '../utils/validation';
+import { trimObjectValues } from '../utils/formatters';
+import { updateCustomerList } from '../services/customerService';
 
 export default function EditCustomerModal({
   selectedCustomer,
-  setSelectedCustomer, 
+  setSelectedCustomer,
   customers,
   setCustomers,
   setShowEditModal,
@@ -20,20 +23,6 @@ export default function EditCustomerModal({
     setEdited((prev) => ({ ...prev, [name]: value }));
   };
 
-  const validateFields = () => {
-    const required = ['Name', 'Email', 'Account Status', 'Membership', 'Cust. Id', 'Phone'];
-    const newErrors = {};
-
-    for (const key of required) {
-      if (!edited[key]?.toString().trim()) {
-        newErrors[key] = 'Required';
-      }
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const close = () => {
     setShowEditModal(false);
   };
@@ -41,16 +30,25 @@ export default function EditCustomerModal({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const trimmed = Object.fromEntries(
-      Object.entries(edited).map(([k, v]) => [k, v?.toString().trim()])
-    );
+    const trimmed = trimObjectValues(edited);
     setEdited(trimmed);
 
-    if (!validateFields()) return;
+    const requiredFields = ['Name', 'Email', 'Account Status', 'Membership', 'Cust. Id', 'Phone'];
+    const isValid = validateCustomerFields(trimmed, requiredFields);
 
-    const updated = customers.map((c) => (c['Cust. Id'] === trimmed['Cust. Id'] ? trimmed : c));
-    setCustomers(updated);
-    if (setSelectedCustomer) setSelectedCustomer(trimmed); 
+    if (!isValid) {
+      setErrors(
+        Object.fromEntries(
+          requiredFields.map((field) => [field, !trimmed[field] ? 'Required' : ''])
+        )
+      );
+      return;
+    }
+
+    const updated = { ...selectedCustomer, ...trimmed };
+    const updatedList = updateCustomerList(customers, updated);
+    setCustomers(updatedList);
+    if (setSelectedCustomer) setSelectedCustomer(updated);
     close();
   };
 

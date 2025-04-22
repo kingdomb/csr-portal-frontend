@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/30</span>
+                <span class='fraction'>0/25</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/26</span>
+                <span class='fraction'>0/23</span>
             </div>
         
             
@@ -190,9 +190,10 @@
 <a name='L125'></a><a href='#L125'>125</a>
 <a name='L126'></a><a href='#L126'>126</a>
 <a name='L127'></a><a href='#L127'>127</a>
-<a name='L128'></a><a href='#L128'>128</a>
-<a name='L129'></a><a href='#L129'>129</a>
-<a name='L130'></a><a href='#L130'>130</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L128'></a><a href='#L128'>128</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -210,20 +211,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -239,9 +226,18 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -327,10 +323,13 @@ import { useState } from 'react';
 import ModalCard from '../components/common/ModalCard';
 import SelectField from '../components/common/SelectField';
 import InputField from '../components/common/InputField';
+import { validateCustomerFields } from '../utils/validation';
+import { trimObjectValues } from '../utils/formatters';
+import { updateCustomerList } from '../services/customerService';
 &nbsp;
 export default function <span class="fstat-no" title="function not covered" >EditCustomerModal(</span>{
   selectedCustomer,
-  setSelectedCustomer, 
+  setSelectedCustomer,
   customers,
   setCustomers,
   setShowEditModal,
@@ -343,20 +342,6 @@ export default function <span class="fstat-no" title="function not covered" >Edi
 <span class="cstat-no" title="statement not covered" >    setEdited(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, [name]: value })</span>);</span>
   };
 &nbsp;
-  const validateFields = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-    const required = <span class="cstat-no" title="statement not covered" >['Name', 'Email', 'Account Status', 'Membership', 'Cust. Id', 'Phone'];</span>
-    const newErrors = <span class="cstat-no" title="statement not covered" >{};</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    for (const key of required) {</span>
-<span class="cstat-no" title="statement not covered" >      if (!edited[key]?.toString().trim()) {</span>
-<span class="cstat-no" title="statement not covered" >        newErrors[key] = 'Required';</span>
-      }
-    }
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    setErrors(newErrors);</span>
-<span class="cstat-no" title="statement not covered" >    return Object.keys(newErrors).length === 0;</span>
-  };
-&nbsp;
   const close = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setShowEditModal(false);</span>
   };
@@ -364,16 +349,25 @@ export default function <span class="fstat-no" title="function not covered" >Edi
   const handleSubmit = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(e</span>) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    e.preventDefault();</span>
 &nbsp;
-    const trimmed = <span class="cstat-no" title="statement not covered" >Object.fromEntries(</span>
-      Object.entries(edited).map(<span class="fstat-no" title="function not covered" >([</span>k, v]) =&gt; <span class="cstat-no" title="statement not covered" >[k, v?.toString().trim()])</span>
-    );
+    const trimmed = <span class="cstat-no" title="statement not covered" >trimObjectValues(edited);</span>
 <span class="cstat-no" title="statement not covered" >    setEdited(trimmed);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (!validateFields()) <span class="cstat-no" title="statement not covered" >return;</span></span>
+    const requiredFields = <span class="cstat-no" title="statement not covered" >['Name', 'Email', 'Account Status', 'Membership', 'Cust. Id', 'Phone'];</span>
+    const isValid = <span class="cstat-no" title="statement not covered" >validateCustomerFields(trimmed, requiredFields);</span>
 &nbsp;
-    const updated = <span class="cstat-no" title="statement not covered" >customers.map(<span class="fstat-no" title="function not covered" >(c</span>) =&gt; (<span class="cstat-no" title="statement not covered" >c['Cust. Id'] === trimmed['Cust. Id'] ? trimmed : c)</span>);</span>
-<span class="cstat-no" title="statement not covered" >    setCustomers(updated);</span>
-<span class="cstat-no" title="statement not covered" >    if (setSelectedCustomer) <span class="cstat-no" title="statement not covered" >setSelectedCustomer(trimmed); </span></span>
+<span class="cstat-no" title="statement not covered" >    if (!isValid) {</span>
+<span class="cstat-no" title="statement not covered" >      setErrors(</span>
+        Object.fromEntries(
+          requiredFields.map(<span class="fstat-no" title="function not covered" >(f</span>ield) =&gt; <span class="cstat-no" title="statement not covered" >[field, !trimmed[field] ? 'Required' : ''])</span>
+        )
+      );
+<span class="cstat-no" title="statement not covered" >      return;</span>
+    }
+&nbsp;
+    const updated = <span class="cstat-no" title="statement not covered" >{ ...selectedCustomer, ...trimmed };</span>
+    const updatedList = <span class="cstat-no" title="statement not covered" >updateCustomerList(customers, updated);</span>
+<span class="cstat-no" title="statement not covered" >    setCustomers(updatedList);</span>
+<span class="cstat-no" title="statement not covered" >    if (setSelectedCustomer) <span class="cstat-no" title="statement not covered" >setSelectedCustomer(updated);</span></span>
 <span class="cstat-no" title="statement not covered" >    close();</span>
   };
 &nbsp;
@@ -457,7 +451,7 @@ export default function <span class="fstat-no" title="function not covered" >Edi
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-04-21T23:18:02.859Z
+                at 2025-04-22T23:21:14.701Z
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -1,24 +1,18 @@
 // CustomerDetailsCard.jsx
 import Card from '../common/Card';
+import { splitFields } from '../../utils/splitFields';
+import { getStatusClass } from '../../utils/getStatusClass';
 
 export default function CustomerDetailsCard({ customer }) {
   if (!customer) return null;
 
-  const keys = Object.keys(customer);
-  const half = Math.ceil(keys.length / 2);
-  const left = keys.slice(0, half);
-  const right = keys.slice(half);
+  const { left, right } = splitFields(customer);
 
   const renderFields = (fields) =>
     fields.map((key) => {
       const value = customer[key];
       const isStatus = key.toLowerCase() === 'account status';
-      const statusClass =
-        isStatus && value === 'Active'
-          ? 'text-green-400'
-          : isStatus && value === 'Expired'
-            ? 'text-red-400'
-            : 'text-white';
+      const statusClass = isStatus ? getStatusClass(value) : 'text-white';
 
       return (
         <div key={key} className="flex flex-col lg:flex-row gap-1 lg:gap-2 items-start break-words">

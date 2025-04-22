@@ -2,6 +2,7 @@
 import { FaArrowLeft, FaSearch } from 'react-icons/fa';
 
 import { useLoading } from '../../hooks/useLoading.js';
+import { filterCustomers } from '../../services/customerService';
 
 export default function CustomerSearch({
   searchQuery,
@@ -19,11 +20,7 @@ export default function CustomerSearch({
     setLoading(true);
 
     setTimeout(() => {
-      const filtered = allCustomers.filter((customer) =>
-        ['Name', 'Email', 'Phone'].some((field) =>
-          customer[field]?.toString().toLowerCase().includes(searchQuery.trim().toLowerCase())
-        )
-      );
+      const filtered = filterCustomers(allCustomers, searchQuery);
       setCustomers(filtered);
       setSearchedCustomers(true);
       setCurrentPage(1);

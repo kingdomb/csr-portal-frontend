@@ -6,6 +6,9 @@ import ModalCard from '../components/common/ModalCard';
 import SelectField from '../components/common/SelectField';
 import InputField from '../components/common/InputField';
 
+import { validateCustomerFields } from '../utils/validation';
+import { trimObjectValues } from '../utils/formatters';
+
 export default function EditVehicleSubscriptionModal({
   selectedSubscription,
   setSelectedSubscription,
@@ -37,18 +40,6 @@ export default function EditVehicleSubscriptionModal({
     setEdited((prev) => ({ ...prev, [name]: value }));
   };
 
-  const validateFields = () => {
-    const requiredFields = Object.keys(edited);
-    const newErrors = {};
-    for (const field of requiredFields) {
-      if (!edited[field]?.toString().trim()) {
-        newErrors[field] = 'Required';
-      }
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const close = () => {
     setShowEditModal(false);
     setSelectedSubscription(null);
@@ -57,12 +48,20 @@ export default function EditVehicleSubscriptionModal({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const trimmed = Object.fromEntries(
-      Object.entries(edited).map(([k, v]) => [k, v?.toString().trim()])
-    );
+    const trimmed = trimObjectValues(edited);
     setEdited(trimmed);
 
-    if (!validateFields()) return;
+    const requiredFields = Object.keys(trimmed);
+    const isValid = validateCustomerFields(trimmed, requiredFields);
+
+    if (!isValid) {
+      setErrors(
+        Object.fromEntries(
+          requiredFields.map((field) => [field, !trimmed[field] ? 'Required' : ''])
+        )
+      );
+      return;
+    }
 
     if (isNew) {
       setCustomerSubscriptions([...customerSubscriptions, trimmed]);
@@ -72,6 +71,7 @@ export default function EditVehicleSubscriptionModal({
       );
       setCustomerSubscriptions(updated);
     }
+
     setSelectedSubscription(trimmed);
     close();
   };

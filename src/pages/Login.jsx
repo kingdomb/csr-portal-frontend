@@ -5,6 +5,7 @@ import { useRef, useState } from 'react';
 import { authenticateUser } from '../data/csrUsers';
 import useAuth from '../authentication/useAuth';
 import logo from '../assets/autowash_logo.webp';
+import { validateLoginFields } from '../utils/validation';
 
 const Login = () => {
   const usernameRef = useRef();
@@ -21,14 +22,7 @@ const Login = () => {
     const username = usernameRef.current.value.trim();
     const password = passwordRef.current.value.trim();
 
-    const errors = {};
-    if (!username) errors.username = 'Email is required.';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username))
-      errors.username = 'Enter a valid email address.';
-
-    if (!password) errors.password = 'Password is required.';
-    else if (password.length > 16) errors.password = 'Password must be 16 characters or fewer.';
-
+    const errors = validateLoginFields({ username, password }); // ✅ USE SHARED UTILITY
     setValidationErrors(errors);
     if (Object.keys(errors).length > 0) return;
 
