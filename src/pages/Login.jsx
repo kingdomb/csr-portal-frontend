@@ -1,7 +1,7 @@
-// Login.jsx (controlled inputs version)
 // Login.jsx
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 import { authenticateUser } from '../data/csrUsers';
 import useAuth from '../authentication/useAuth';
@@ -9,10 +9,11 @@ import logo from '../assets/autowash_logo.webp';
 import { validateLoginFields } from '../utils/validation';
 
 const Login = () => {
-  const [username, setUsername]     = useState('user1@amp.com');
-  const [password, setPassword]     = useState('password123*');
+  const [username, setUsername] = useState('user1@amp.com');
+  const [password, setPassword] = useState('password123*');
+  const [showPassword, setShowPassword] = useState(false);
   const [focusField, setFocusField] = useState(null);
-  const [error, setError]           = useState('');
+  const [error, setError] = useState('');
   const [validationErrors, setValidationErrors] = useState({});
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -38,15 +39,15 @@ const Login = () => {
     const isFocused = focusField === field;
     return `
       absolute left-4 transition-all
-      ${hasValue || isFocused
-        ? 'top-1.5 text-[11px] text-blue-400'
-        : 'top-4 text-base text-gray-500'
+      ${
+        hasValue || isFocused
+          ? 'top-1.5 text-[11px] text-blue-400'
+          : 'top-4 text-base text-gray-500'
       }
     `;
   };
 
-  const inputBorder = (field) =>
-    validationErrors[field] ? 'border-red-500' : 'border-gray-600';
+  const inputBorder = (field) => (validationErrors[field] ? 'border-red-500' : 'border-gray-600');
 
   return (
     <div className="min-h-screen bg-[#1E293B] flex items-center justify-center p-4">
@@ -72,7 +73,7 @@ const Login = () => {
             onBlur={() => setFocusField(null)}
             autoComplete="username"
             className={`
-              w-full bg-[#1E293B] text-white
+              peer w-full bg-[#1E293B] text-white
               px-4 pt-6 pb-1 rounded-3xl border
               ${inputBorder('username')}
               focus:outline-none focus:ring-2 focus:ring-blue-500
@@ -86,31 +87,43 @@ const Login = () => {
           )}
         </div>
 
-        {/* Password */}
-        <div className="relative">
-          <input
-            id="loginPassword"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onFocus={() => setFocusField('password')}
-            onBlur={() => setFocusField(null)}
-            autoComplete="current-password"
-            maxLength={16}
-            className={`
-              w-full bg-[#1E293B] text-white
-              px-4 pt-6 pb-1 rounded-3xl border
-              ${inputBorder('password')}
-              focus:outline-none focus:ring-2 focus:ring-blue-500
-            `}
-          />
-          <label htmlFor="loginPassword" className={labelClass('password')}>
-            Password
-          </label>
+        {/* Password with show/hide */}
+        <div>
+          <div className="relative">
+            <input
+              id="loginPassword"
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onFocus={() => setFocusField('password')}
+              onBlur={() => setFocusField(null)}
+              autoComplete="current-password"
+              maxLength={16}
+              className={`
+        peer w-full bg-[#1E293B] text-white
+        px-4 pt-6 pb-1 rounded-3xl border
+        ${inputBorder('password')}
+        focus:outline-none focus:ring-2 focus:ring-blue-500
+      `}
+            />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+              className="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-gray-200 px-2"
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+
+            <label htmlFor="loginPassword" className={labelClass('password')}>
+              Password
+            </label>
+          </div>
+
           {validationErrors.password && (
             <p className="text-red-500 text-xs mt-1">{validationErrors.password}</p>
           )}
-          <p className="text-gray-500 text-xs mt-1">Max 16 characters</p>
         </div>
 
         <div className="flex justify-center">
